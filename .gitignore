@@ -1,12 +1,4 @@
-*.jpg
-*.jpeg
-*.png
-*.gif
-*.zip
-*.rar
-*.scss
-*.less
 catalog/view/javascript/**/??.js
 admin/view/javascript/**/??.js
 admin/view/javascript/**/lang/*.js
-system/storage/* 
+system/storage/*
