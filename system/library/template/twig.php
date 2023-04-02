@@ -1,13 +1,18 @@
 <?php
+
 namespace Template;
-final class Twig {
+
+final class Twig
+{
 	private $data = array();
 
-	public function set($key, $value) {
+	public function set($key, $value)
+	{
 		$this->data[$key] = $value;
 	}
-	
-	public function render($filename, $code = '') {
+
+	public function render($filename, $code = '')
+	{
 		if (!$code) {
 			$file = DIR_TEMPLATE . $filename . '.twig';
 
@@ -22,7 +27,7 @@ final class Twig {
 		// initialize Twig environment
 		$config = array(
 			'autoescape'  => false,
-			'debug'       => false,
+			'debug'       => true,
 			'auto_reload' => true,
 			'cache'       => DIR_CACHE . 'template/'
 		);
@@ -31,11 +36,12 @@ final class Twig {
 			$loader = new \Twig\Loader\ArrayLoader(array($filename . '.twig' => $code));
 
 			$twig = new \Twig\Environment($loader, $config);
+			$twig->addExtension(new \Twig\Extension\DebugExtension);
 
 			return $twig->render($filename . '.twig', $this->data);
 		} catch (Exception $e) {
 			trigger_error('Error: Could not load template ' . $filename . '!');
 			exit();
-		}	
-	}	
+		}
+	}
 }
