@@ -1,0 +1,20 @@
+{% if languages|length > 1 %}
+	<form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-language">
+		<div class="btn-group">
+			{% for language in languages %}
+				{% if language.code == code %}
+					<button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">{{ language.name }}</button>
+				{% endif %}
+			{% endfor %}
+
+			<div class="dropdown-menu dropdown-menu-right">
+				{% for language in languages|filter(language => language.code != code) %}
+					<button name="{{ language.code }}" class=" dropdown-item language-select" type=" button">{{ language.name }}</button>
+				{% endfor %}
+			</div>
+		</div>
+
+		<input type="hidden" name="code" value=""/>
+		<input type="hidden" name="redirect" value="{{ redirect }}"/>
+	</form>
+{% endif %}
