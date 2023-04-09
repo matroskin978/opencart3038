@@ -1,0 +1,31 @@
+<!-- Carousel Start -->
+<div class="container-fluid mb-3">
+	<div class="row px-xl-5">
+		<div class="col-lg-12">
+			<div id="header-carousel{{ module }}" class="carousel slide carousel-fade mb-30 mb-lg-0" data-ride="carousel">
+				<ol class="carousel-indicators">
+					{% for banner in banners %}
+						<li data-target="#header-carousel{{ module }}" data-slide-to="{{ loop.index0 }}" {% if loop.index0 == 0 %} class="active" {% endif %}></li>
+					{% endfor %}
+				</ol>
+				<div class="carousel-inner">
+					{% for banner in banners %}
+						<div class="carousel-item position-relative {% if loop.index0 == 0 %}active{% endif %}" style="height: 430px;">
+							<img class="position-absolute w-100 h-100" src="{{ banner.image }}" style="object-fit: cover;">
+							<div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
+								<div class="p-3" style="max-width: 700px;">
+									<h1 class="display-4 text-white mb-3 animate__animated animate__fadeInDown">{{ banner.title }}</h1>
+									<p class="mx-md-5 px-5 animate__animated animate__bounceIn">Lorem rebum magna amet lorem magna erat diam stet. Sadips duo stet amet amet ndiam elitr ipsum diam</p>
+									{% if banner.link %}
+										<a class="btn btn-outline-light py-2 px-4 mt-3 animate__animated animate__fadeInUp" href="{{ banner.link }}">Shop Now</a>
+									{% endif %}
+								</div>
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Carousel End -->
