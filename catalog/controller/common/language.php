@@ -1,6 +1,8 @@
 <?php
-class ControllerCommonLanguage extends Controller {
-	public function index() {
+class ControllerCommonLanguage extends Controller
+{
+	public function index()
+	{
 		$this->load->language('common/language');
 
 		$data['action'] = $this->url->link('common/language/language', '', $this->request->server['HTTPS']);
@@ -23,7 +25,14 @@ class ControllerCommonLanguage extends Controller {
 		}
 
 		if (!isset($this->request->get['route'])) {
-			$data['redirect'] = $this->url->link('common/home');
+			// $data['redirect'] = $this->url->link('common/home');
+			// add
+			if ($this->request->server['HTTPS']) {
+				$server = $this->config->get('config_ssl');
+			} else {
+				$server = $this->config->get('config_url');
+			}
+			$data['redirect'] = $server;
 		} else {
 			$url_data = $this->request->get;
 
@@ -45,7 +54,8 @@ class ControllerCommonLanguage extends Controller {
 		return $this->load->view('common/language', $data);
 	}
 
-	public function language() {
+	public function language()
+	{
 		if (isset($this->request->post['code'])) {
 			$this->session->data['language'] = $this->request->post['code'];
 		}
