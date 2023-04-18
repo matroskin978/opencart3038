@@ -1,6 +1,8 @@
 <?php
-class ControllerExtensionModuleFeatured extends Controller {
-	public function index($setting) {
+class ControllerExtensionModuleFeatured extends Controller
+{
+	public function index($setting)
+	{
 		$this->load->language('extension/module/featured');
 
 		$this->load->model('catalog/product');
@@ -39,7 +41,7 @@ class ControllerExtensionModuleFeatured extends Controller {
 						$special = false;
 						$tax_price = (float)$product_info['price'];
 					}
-		
+
 					if ($this->config->get('config_tax')) {
 						$tax = $this->currency->format($tax_price, $this->session->data['currency']);
 					} else {
@@ -48,8 +50,11 @@ class ControllerExtensionModuleFeatured extends Controller {
 
 					if ($this->config->get('config_review_status')) {
 						$rating = $product_info['rating'];
+						// add
+						$reviews = $product_info['reviews'];
 					} else {
 						$rating = false;
+						$reviews = false;
 					}
 
 					$data['products'][] = array(
@@ -61,11 +66,16 @@ class ControllerExtensionModuleFeatured extends Controller {
 						'special'     => $special,
 						'tax'         => $tax,
 						'rating'      => $rating,
+						// add
+						'reviews'      => $reviews,
 						'href'        => $this->url->link('product/product', 'product_id=' . $product_info['product_id'])
 					);
 				}
 			}
 		}
+
+		// add
+		$data['title'] = $this->language->get("{$setting['name']}_title");
 
 		if ($data['products']) {
 			return $this->load->view('extension/module/featured', $data);

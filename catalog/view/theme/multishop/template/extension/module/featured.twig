@@ -1,0 +1,56 @@
+<div class="container-fluid pt-5 pb-3">
+	<h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4">
+		<span class="bg-secondary pr-3">{{ title }}</span>
+	</h2>
+
+	<div class="row px-xl-5">
+		{% for product in products %}
+			<div class="col-lg-3 col-md-4 col-sm-6 pb-1">
+				<div class="product-item bg-light mb-4">
+					<div class="product-img position-relative overflow-hidden">
+						<img class="img-fluid w-100" src="{{ product.thumb }}" alt="">
+					</div>
+					<div class="text-center py-4">
+						<a class="h6 text-decoration-none text-truncate" href="{{ product.href }}">{{ product.name }}</a>
+						{% if product.price %}
+							<div class="d-flex align-items-center justify-content-center mt-2">
+								{% if not product.special %}
+									<h5>{{ product.price }}</h5>
+								{% else %}
+									<h5>{{ product.special }}</h5>
+									<h6 class="text-muted ml-2">
+										<del>{{ product.price }}</del>
+									</h6>
+								{% endif %}
+							</div>
+						{% endif %}
+
+						<div class="d-flex align-items-center justify-content-center mb-1">
+							{% for i in 1..5 %}
+								{% if product.rating < i %}
+									<small class="far fa-star text-primary mr-1"></small>
+								{% else %}
+									<small class="fa fa-star text-primary mr-1"></small>
+								{% endif %}
+							{% endfor %}
+							<small>({{ product.reviews }})</small>
+						</div>
+
+						<div class="cart-buttons d-flex justify-content-center mt-2">
+							<button type="button" onclick="cart.add('{{ product.product_id }}');" class="btn btn-outline-dark btn-square" href="">
+								<i class="fa fa-shopping-cart"></i>
+							</button>
+							<button type="button" onclick="wishlist.add('{{ product.product_id }}');" class="btn btn-outline-dark btn-square" href="">
+								<i class="far fa-heart"></i>
+							</button>
+							<button type="button" onclick="compare.add('{{ product.product_id }}');" class="btn btn-outline-dark btn-square" href="">
+								<i class="fa fa-sync-alt"></i>
+							</button>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+</div>
