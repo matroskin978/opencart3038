@@ -333,7 +333,7 @@ legend {
   }
 }
 
-progress {
+cart-buttons progress {
   vertical-align: baseline;
 }
 
@@ -10814,7 +10814,7 @@ h6 {
   transition: .5s;
 }
 
-.product-action a.btn {
+.product-action .btn {
   position: relative;
   margin: 0 3px;
   margin-top: 100px;
@@ -10829,25 +10829,25 @@ h6 {
   background: rgba(255, 255, 255, 0.7);
 }
 
-.product-item:hover .product-action a.btn:first-child {
+.product-item:hover .product-action .btn:first-child {
   opacity: 1;
   margin-top: 0;
   transition: .3s 0s;
 }
 
-.product-item:hover .product-action a.btn:nth-child(2) {
+.product-item:hover .product-action .btn:nth-child(2) {
   opacity: 1;
   margin-top: 0;
   transition: .3s .05s;
 }
 
-.product-item:hover .product-action a.btn:nth-child(3) {
+.product-item:hover .product-action .btn:nth-child(3) {
   opacity: 1;
   margin-top: 0;
   transition: .3s .1s;
 }
 
-.product-item:hover .product-action a.btn:nth-child(4) {
+.product-item:hover .product-action .btn:nth-child(4) {
   opacity: 1;
   margin-top: 0;
   transition: .3s .15s;
@@ -10897,4 +10897,15 @@ h6 {
 
 .offer-text h3 {
   font-size: 1.5rem;
+}
+
+.cart-buttons {
+  display: flex;
+  justify-content: center;
+}
+
+@media (min-width: 992px) {
+  .cart-buttons {
+    display: none;
+  }
 }
