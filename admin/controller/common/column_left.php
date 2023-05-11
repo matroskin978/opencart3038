@@ -118,6 +118,15 @@ class ControllerCommonColumnLeft extends Controller {
 				);
 			}
 
+            // TODO: ctmenu
+            if ($this->user->hasPermission('access', 'extension/ctmenu')) {
+                $catalog[] = array(
+                    'name'	   => $this->language->get('text_ctmenu'),
+                    'href'     => $this->url->link('extension/ctmenu', 'user_token=' . $this->session->data['user_token'], true),
+                    'children' => array()
+                );
+            }
+
 			if ($catalog) {
 				$data['menus'][] = array(
 					'id'       => 'menu-catalog',

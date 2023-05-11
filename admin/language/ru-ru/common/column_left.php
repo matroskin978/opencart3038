@@ -89,4 +89,5 @@ $_['text_complete_status']      = 'Заказы завершенные';
 $_['text_processing_status']    = 'Заказы в процессе';
 $_['text_other_status']         = 'Остальные заказы';
 
-
+// TODO: ctmenu
+$_['text_ctmenu']          = 'Произвольные меню';

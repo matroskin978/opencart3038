@@ -74,3 +74,6 @@ $_['text_order_recurring']      = 'Recurring Orders';
 $_['text_complete_status']      = 'Orders Completed';
 $_['text_processing_status']    = 'Orders Processing';
 $_['text_other_status']         = 'Other Statuses';
+
+// TODO: ctmenu
+$_['text_ctmenu']          = 'Custom menus';

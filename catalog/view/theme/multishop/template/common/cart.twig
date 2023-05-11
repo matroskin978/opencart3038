@@ -50,17 +50,17 @@
                     {% else %}
                     <p class="text-left">{{ text_empty }}</p>
                     {% endif %}
+                    <table class="table table-bordered">
+                        {% for total in totals %}
+                            <tr>
+                                <td class="text-right"><strong>{{ total.title }}</strong></td>
+                                <td class="text-right">{{ total.text }}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
                 </div>
             </div>
             <div class="modal-footer">
-                <table class="table table-bordered">
-                    {% for total in totals %}
-                    <tr>
-                        <td class="text-right"><strong>{{ total.title }}</strong></td>
-                        <td class="text-right">{{ total.text }}</td>
-                    </tr>
-                    {% endfor %}
-                </table>
                 <a href="{{ cart }}" class="btn btn-secondary">{{ text_cart }}</a>
                 <a href="{{ checkout }}" class="btn btn-primary">{{ text_checkout }}</a>
             </div>
