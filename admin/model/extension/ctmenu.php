@@ -45,4 +45,31 @@ ENGINE=InnoDB;
         return $query->rows;
     }
 
+    public function getMenu($menu_id)
+    {
+        $query = $this->db->query("SELECT * FROM ctmenu WHERE id = " . (int)$menu_id);
+        return $query->row;
+    }
+
+    public function addMenu($data)
+    {
+        $this->db->query("INSERT INTO `ctmenu` SET `title` = '" . $this->db->escape($data['title']) . "' ");
+        return $this->db->getLastId();
+    }
+
+    public function editMenu($menu_id, $data)
+    {
+        $this->db->query("UPDATE `ctmenu` SET title = '" . $this->db->escape($data['title']) . "' WHERE id = " . (int)$menu_id);
+    }
+
+    public function deleteMenu($menu_id)
+    {
+        $query = $this->db->query("SELECT COUNT(*) AS cnt FROM `ctmenu_link` WHERE menu_id = " . (int)$menu_id);
+        if (!$query->row['cnt']) {
+            $query = $this->db->query("DELETE FROM `ctmenu` WHERE id = " . (int)$menu_id);
+            return true;
+        }
+        return false;
+    }
+
 }
