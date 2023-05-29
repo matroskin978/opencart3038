@@ -10917,3 +10917,9 @@ h6 {
     left: auto;
   }
 }
+
+div.required label::after {
+  content: " *";
+  color: #ff0000;
+  font-weight: bold;
+}

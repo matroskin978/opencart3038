@@ -14,6 +14,8 @@
 	<meta name="keywords" content="{{ keywords }}" />
 	{% endif %}
 
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
 	<!-- Google Web Fonts -->
 	<link rel="preconnect" href="https://fonts.gstatic.com">
 	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
@@ -61,8 +63,14 @@
 						<button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">My
 							Account</button>
 						<div class="dropdown-menu dropdown-menu-right">
-							<button class="dropdown-item" type="button">Sign in</button>
-							<button class="dropdown-item" type="button">Sign up</button>
+							{% if logged %}
+								<a class="dropdown-item" href="{{ account }}">{{ text_account }}</a>
+								<a class="dropdown-item" href="{{ order }}">{{ text_order }}</a>
+								<a class="dropdown-item" href="{{ logout }}">{{ text_logout }}</a>
+							{% else %}
+								<a class="dropdown-item" href="{{ register }}">{{ text_register }}</a>
+								<a class="dropdown-item" href="{{ login }}">{{ text_login }}</a>
+							{% endif %}
 						</div>
 					</div>
 					<div class="btn-group mx-2">

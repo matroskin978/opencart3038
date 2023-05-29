@@ -1,0 +1,46 @@
+{{ header }}
+
+<div id="common-success" class="container-fluid">
+
+    <!-- Breadcrumb Start -->
+    <div class="row px-xl-5">
+        <div class="col-12">
+            <nav class="breadcrumb bg-light mb-30">
+                {% for breadcrumb in breadcrumbs %}
+                    {% if loop.last %}
+                        <span class="breadcrumb-item active">{{ breadcrumb.text }}</span>
+                    {% else %}
+                        <a class="breadcrumb-item text-dark" href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a>
+                    {% endif %}
+                {% endfor %}
+            </nav>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+    <div class="row px-xl-5">
+        {{ column_left }}
+        {% if column_left and column_right %}
+            {% set class = 'col-sm-6' %}
+        {% elseif column_left or column_right %}
+            {% set class = 'col-sm-9' %}
+        {% else %}
+            {% set class = 'col-sm-12' %}
+        {% endif %}
+        <div id="content" class="{{ class }}">
+            <div class="bg-light p-30 mb-5">
+                {{ content_top }}
+                <h1>{{ heading_title }}</h1>
+                {{ text_message }}
+                <div class="buttons">
+                    <div class="pull-right"><a href="{{ continue }}" class="btn btn-primary">{{ button_continue }}</a>
+                    </div>
+                </div>
+                {{ content_bottom }}
+            </div>
+        </div>
+        {{ column_right }}</div>
+
+</div>
+
+{{ footer }}
