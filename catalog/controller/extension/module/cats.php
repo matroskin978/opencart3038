@@ -4,6 +4,7 @@ class ControllerExtensionModuleCats extends Controller
 	public function index()
 	{
 		$this->load->language('extension/module/cats');
+        $this->load->model('tool/image');
 
 		if (isset($this->request->get['path'])) {
 			$parts = explode('_', (string)$this->request->get['path']);

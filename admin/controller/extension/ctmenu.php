@@ -183,6 +183,117 @@ class ControllerExtensionCtmenu extends Controller
         $this->index();
     }
 
+    /**
+     * Show menu links
+     */
+    public function viewMenuLinks()
+    {
+        $this->load->language('extension/ctmenu');
+        $this->document->setTitle($this->language->get('heading_title'));
+        $this->load->model('extension/ctmenu');
+
+        // breadcrumbs
+        $data['breadcrumbs'] = array();
+        $data['breadcrumbs'][] = array(
+            'text' => $this->language->get('text_home'),
+            'href' => $this->url->link('common/dashboard', "user_token={$this->session->data['user_token']}", true)
+        );
+        $data['breadcrumbs'][] = array(
+            'text' => $this->language->get('heading_title'),
+            'href' => $this->url->link('extension/ctmenu', "user_token={$this->session->data['user_token']}", true)
+        );
+
+        // button add
+        $data['add'] = $this->url->link('extension/ctmenu/add-menu-link', "user_token={$this->session->data['user_token']}&menu_id={$this->request->get['menu_id']}", true);
+
+        if (isset($this->error['warning'])) {
+            $data['error_warning'] = $this->error['warning'];
+        } else {
+            $data['error_warning'] = '';
+        }
+
+        // flash messages
+        if (isset($this->session->data['error'])) {
+            $data['error_warning'] = $this->session->data['error'];
+            unset($this->session->data['error']);
+        } else {
+            $data['error'] = '';
+        }
+
+        if (isset($this->session->data['success'])) {
+            $data['success'] = $this->session->data['success'];
+            unset($this->session->data['success']);
+        } else {
+            $data['success'] = '';
+        }
+
+        // menus list
+        $menu_data = $this->model_extension_ctmenu->getTreeItems($this->request->get['menu_id']);
+        $menu_tree = $this->model_extension_ctmenu->getMapTree($menu_data);
+        $data['ctmenu'] = $this->treeToHtml($menu_tree);
+
+        $data['header'] = $this->load->controller('common/header');
+        $data['column_left'] = $this->load->controller('common/column_left');
+        $data['footer'] = $this->load->controller('common/footer');
+        $this->response->setOutput($this->load->view('extension/ctmenu/menu_view_links', $data));
+    }
+
+    private function dump($data, $die = true)
+    {
+        echo "<pre>" . print_r($data, 1) . "</pre>";
+        if ($die) {
+            die;
+        }
+    }
+
+    private function treeToHtml($tree, $tpl = 'list', $tab = '', $parent_id = 0){
+        $str = '';
+        foreach ($tree as $item) {
+            $str .= $this->treeToTemplate($item, $tpl, $tab, $parent_id);
+        }
+        return $str;
+    }
+
+    private function treeToTemplate($item, $tpl, $tab, $parent_id){
+        ob_start();
+
+        if(!isset($item['children'])){
+            $delete_link = $this->url->link('extension/ctmenu/delete-menu-link', "user_token={$this->session->data['user_token']}&menu_link_id={$item['id']}", true);
+            $delete = '<a href="' . $delete_link . '" class="delete btn btn-danger"><i class="fa fa-trash-o"></i></a>';
+        }
+        $edit = $this->url->link('extension/ctmenu/edit-menu-link', "user_token={$this->session->data['user_token']}&menu_link_id={$item['id']}", true);
+        ?>
+
+        <?php if($tpl == 'list'): ?>
+            <p class="item-p">
+                <a class="list-group-item" href="<?= $edit; ?>"><?=$item['title'];?></a>
+                <?php if(isset($delete)): ?>
+                    <span><?=$delete;?></span>
+                <?php endif; ?>
+            </p>
+            <?php if(isset($item['children'])): ?>
+                <div class="list-group">
+                    <?= $this->treeToHtml($item['children']); ?>
+                </div>
+            <?php endif; ?>
+        <?php endif; ?>
+
+        <?php if($tpl == 'select'): ?>
+            <option
+                value="<?= $item['id']; ?>"
+                <?php if($item['id'] == $parent_id) echo ' selected'; ?>
+                <?php if(isset($_GET['menu_link_id']) && $item['id'] == $_GET['menu_link_id']) echo ' disabled'; ?>>
+                <?= $tab . $item['title']; ?>
+            </option>
+            <?php if(isset($item['children'])): ?>
+                <?= $this->treeToHtml($item['children'], 'select', '&nbsp;' . $tab. '-', $parent_id); ?>
+            <?php endif; ?>
+        <?php endif ?>
+
+        <?php
+        return ob_get_clean();
+    }
+
     protected function validateMenuForm()
     {
         if (!$this->user->hasPermission('modify', 'extension/ctmenu')) {
