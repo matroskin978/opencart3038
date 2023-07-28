@@ -1,0 +1,175 @@
+{{ header }}
+
+<div id="product-search">
+
+    <!-- Breadcrumb Start -->
+    <div class="container-fluid">
+        <div class="row px-xl-5">
+            <div class="col-12">
+                <nav class="breadcrumb bg-light mb-30">
+                    {% for breadcrumb in breadcrumbs %}
+                        {% if loop.last %}
+                            <span class="breadcrumb-item active">{{ breadcrumb.text }}</span>
+                        {% else %}
+                            <a class="breadcrumb-item text-dark" href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a>
+                        {% endif %}
+                    {% endfor %}
+                </nav>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+
+    <!-- Shop Start -->
+    <div class="container-fluid">
+        <div class="row px-xl-5">
+
+            {{ column_left }}
+
+            {% if column_left and column_right %}
+                {% set class, card = 'col-lg-6 col-md-8', 'col-lg-6' %}
+            {% elseif column_left or column_right %}
+                {% set class, card = 'col-lg-9 col-md-8', 'col-lg-4' %}
+            {% else %}
+                {% set class, card = 'col-12', 'col-lg-3' %}
+            {% endif %}
+
+            <!-- Shop Product Start -->
+            <div class="{{ class }}">
+                <div class="row pb-3">
+
+                    {% if products %}
+                        <div class="col-sm-6">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <label class="input-group-text" for="sort-select">{{ text_sort }}</label>
+                                </div>
+                                <select class="custom-select" id="input-sort" onchange="location = this.value;">
+                                    {% for sorts in sorts %}
+                                        {% if sorts.value == '%s-%s'|format(sort, order) %}
+                                            <option value="{{ sorts.href }}"
+                                                    selected="selected">{{ sorts.text }}</option>
+                                        {% else %}
+                                            <option value="{{ sorts.href }}">{{ sorts.text }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <label class="input-group-text" for="limit-select">{{ text_limit }}</label>
+                                </div>
+                                <select class="custom-select" id="input-limit" onchange="location = this.value;">
+                                    {% for limits in limits %}
+                                        {% if limits.value == limit %}
+                                            <option value="{{ limits.href }}"
+                                                    selected="selected">{{ limits.text }}</option>
+                                        {% else %}
+                                            <option value="{{ limits.href }}">{{ limits.text }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        {% for product in products %}
+                            <div class="{{ card }} col-sm-6 pb-1">
+                                <div class="product-item bg-light mb-4">
+                                    <div class="product-img position-relative overflow-hidden">
+                                        <img class="img-fluid w-100" src="{{ product.thumb }}" alt="">
+                                        <div class="product-action">
+                                            <button type="button" onclick="cart.add('{{ product.product_id }}');"
+                                                    class="btn btn-outline-dark btn-square" href="">
+                                                <i class="fa fa-shopping-cart"></i>
+                                            </button>
+                                            <button type="button" onclick="wishlist.add('{{ product.product_id }}');"
+                                                    class="btn btn-outline-dark btn-square" href="">
+                                                <i class="far fa-heart"></i>
+                                            </button>
+                                            <button type="button" onclick="compare.add('{{ product.product_id }}');"
+                                                    class="btn btn-outline-dark btn-square" href="">
+                                                <i class="fa fa-sync-alt"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="text-center py-4">
+                                        <a class="h6 text-decoration-none text-truncate"
+                                           href="{{ product.href }}">{{ product.name }}</a>
+                                        {% if product.price %}
+                                            <div class="d-flex align-items-center justify-content-center mt-2">
+                                                {% if not product.special %}
+                                                    <h5>{{ product.price }}</h5>
+                                                {% else %}
+                                                    <h5>{{ product.special }}</h5>
+                                                    <h6 class="text-muted ml-2">
+                                                        <del>{{ product.price }}</del>
+                                                    </h6>
+                                                {% endif %}
+                                            </div>
+                                        {% endif %}
+
+                                        <div class="d-flex align-items-center justify-content-center mb-1">
+                                            {% for i in 1..5 %}
+                                                {% if product.rating < i %}
+                                                    <small class="far fa-star text-primary mr-1"></small>
+                                                {% else %}
+                                                    <small class="fa fa-star text-primary mr-1"></small>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+
+                                        <div class="cart-buttons mt-2">
+                                            <button type="button" onclick="cart.add('{{ product.product_id }}');"
+                                                    class="btn btn-outline-dark btn-square" href="">
+                                                <i class="fa fa-shopping-cart"></i>
+                                            </button>
+                                            <button type="button" onclick="wishlist.add('{{ product.product_id }}');"
+                                                    class="btn btn-outline-dark btn-square" href="">
+                                                <i class="far fa-heart"></i>
+                                            </button>
+                                            <button type="button" onclick="compare.add('{{ product.product_id }}');"
+                                                    class="btn btn-outline-dark btn-square" href="">
+                                                <i class="fa fa-sync-alt"></i>
+                                            </button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <nav>
+                                        {{ pagination }}
+                                    </nav>
+                                </div>
+                                <div class="col-md-6 text-right my-auto">
+                                    {{ results }}
+                                </div>
+                            </div>
+                        </div>
+
+                    {% else %}
+                        <div class="col-12">
+                            <p>{{ text_empty }}</p>
+                        </div>
+                    {% endif %}
+
+                </div>
+            </div>
+            <!-- Shop Product End -->
+
+        </div>
+    </div>
+    <!-- Shop End -->
+
+</div>
+
+
+{{ footer }}

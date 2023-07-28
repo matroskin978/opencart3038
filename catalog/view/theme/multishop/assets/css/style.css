@@ -10923,3 +10923,31 @@ div.required label::after {
   color: #ff0000;
   font-weight: bold;
 }
+
+/* Pagination */
+.pagination li span {
+  background-color: #ffd333;
+  border-color: #ffd333;
+  position: relative;
+  display: block;
+  padding: .375em .75rem;
+  color: #fff;
+  border: 1px solid #ffd333;
+}
+.pagination li a {
+  color: #000;
+  position: relative;
+  display: block;
+  padding: .375em .75rem;
+  text-decoration: none;
+  background-color: #fff;
+  transition: all .3s;
+  border: 1px solid #e6e9ec;
+}
+
+.pagination li a:hover {
+  color: #fff;
+  background-color: #ffd333;
+  border-color: #ffd333;
+}
+/* Pagination */
