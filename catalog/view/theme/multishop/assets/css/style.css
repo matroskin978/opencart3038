@@ -3967,7 +3967,8 @@ input[type="button"].btn-block {
 .custom-control-label::before {
   position: absolute;
   top: 0.25rem;
-  left: -1.5rem;
+  /*left: -1.5rem;*/
+  right: 0;
   display: block;
   width: 1rem;
   height: 1rem;
@@ -3980,7 +3981,8 @@ input[type="button"].btn-block {
 .custom-control-label::after {
   position: absolute;
   top: 0.25rem;
-  left: -1.5rem;
+  right: 0;
+  /*left: -1.5rem;*/
   display: block;
   width: 1rem;
   height: 1rem;
@@ -10951,3 +10953,8 @@ div.required label::after {
   border-color: #ffd333;
 }
 /* Pagination */
+
+.filter-block .custom-control-label {
+  cursor: pointer;
+  width: 100%;
+}
