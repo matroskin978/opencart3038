@@ -1,5 +1,17 @@
 (function ($) {
     "use strict";
+
+    $('body').on('click', '.update-cart-product', function (e) {
+        e.preventDefault();
+        let input = $(this).parent().siblings('.td-qty').find('input');
+        let prevVal = +input.data('qty');
+        let newVal = +input.val();
+        let product_id = +input.data('id');
+        if (newVal !== prevVal) {
+            let val = newVal - prevVal;
+            cart.add(product_id, val);
+        }
+    });
     
     // Dropdown on mouse hover
     $(document).ready(function () {

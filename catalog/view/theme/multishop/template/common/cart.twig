@@ -34,13 +34,16 @@
                                         {% if product.recurring %} <br />
                                         - <small>{{ text_recurring }} {{ product.recurring }}</small> {% endif %}
                                     </td>
-                                    <td>{{ product.quantity }}</td>
+                                    <td class="td-qty">
+                                        <input type="number" value="{{ product.quantity }}" min="1" data-qty="{{ product.quantity }}" data-id="{{ product.product_id }}">
+                                    </td>
                                     <td>{{ product.price }}</td>
                                     <td>{{ product.total }}</td>
                                     <td>
                                         <button class="btn btn-danger" type="button"
                                             onclick="cart.remove('{{ product.cart_id }}');"><i
                                                 class="fa fa-times"></i></button>
+                                        <button class="btn btn-warning update-cart-product" type="button"><i class="fas fa-sync-alt"></i></button>
                                     </td>
                                 </tr>
                                 {% endfor %}

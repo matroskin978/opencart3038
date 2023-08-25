@@ -104,7 +104,9 @@ class ControllerCommonCart extends Controller {
 				'quantity'  => $product['quantity'],
 				'price'     => $price,
 				'total'     => $total,
-				'href'      => $this->url->link('product/product', 'product_id=' . $product['product_id'])
+				'href'      => $this->url->link('product/product', 'product_id=' . $product['product_id']),
+                //TODO:eshop
+                'product_id'   => $product['product_id'],
 			);
 		}
 
