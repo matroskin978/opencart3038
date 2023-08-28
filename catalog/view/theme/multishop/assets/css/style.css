@@ -3967,8 +3967,7 @@ input[type="button"].btn-block {
 .custom-control-label::before {
   position: absolute;
   top: 0.25rem;
-  /*left: -1.5rem;*/
-  right: 0;
+  left: -1.5rem;
   display: block;
   width: 1rem;
   height: 1rem;
@@ -3981,8 +3980,7 @@ input[type="button"].btn-block {
 .custom-control-label::after {
   position: absolute;
   top: 0.25rem;
-  right: 0;
-  /*left: -1.5rem;*/
+  left: -1.5rem;
   display: block;
   width: 1rem;
   height: 1rem;
@@ -10957,4 +10955,31 @@ div.required label::after {
 .filter-block .custom-control-label {
   cursor: pointer;
   width: 100%;
+}
+
+
+.filter-block .custom-control-label::before {
+  position: absolute;
+  top: 0.25rem;
+  left: auto;
+  right: 0;
+  display: block;
+  width: 1rem;
+  height: 1rem;
+  pointer-events: none;
+  content: "";
+  background-color: #fff;
+  border: #adb5bd solid 1px;
+}
+
+.filter-block .custom-control-label::after {
+  position: absolute;
+  top: 0.25rem;
+  right: 0;
+  left: auto;
+  display: block;
+  width: 1rem;
+  height: 1rem;
+  content: "";
+  background: no-repeat 50% / 50% 50%;
 }
