@@ -10922,6 +10922,7 @@ div.required label::after {
   content: " *";
   color: #ff0000;
   font-weight: bold;
+  padding-left: 5px;
 }
 
 /* Pagination */
@@ -10982,4 +10983,11 @@ div.required label::after {
   height: 1rem;
   content: "";
   background: no-repeat 50% / 50% 50%;
+}
+
+div.required-option strong::before {
+  content: " *";
+  color: #ff0000;
+  font-weight: bold;
+  padding-right: 5px;
 }

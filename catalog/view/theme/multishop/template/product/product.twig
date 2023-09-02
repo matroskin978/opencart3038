@@ -58,7 +58,7 @@
                 </div>
             {% endif %}
 
-            <div class="{{ class }} h-auto mb-30" id="content">
+            <div class="{{ class }} h-auto mb-30" id="product">
                 {{ content_top }}
                 <div class="h-100 bg-light p-30">
                     <h3>{{ heading_title }}</h3>
@@ -78,60 +78,53 @@
                         </div><!-- ./d-flex mb-3 -->
                     {% endif %}
 
-                    <h3 class="font-weight-semi-bold mb-4">$150.00</h3>
-                    <p class="mb-4">Volup erat ipsum diam elitr rebum et dolor. Est nonumy elitr erat diam stet sit
-                        clita ea. Sanc ipsum et, labore clita lorem magna duo dolor no sea
-                        Nonumy</p>
-                    <div class="d-flex mb-3">
-                        <strong class="text-dark mr-3">Sizes:</strong>
-                        <form>
-                            <div class="custom-control custom-radio custom-control-inline">
-                                <input type="radio" class="custom-control-input" id="size-1" name="size">
-                                <label class="custom-control-label" for="size-1">XS</label>
-                            </div>
-                            <div class="custom-control custom-radio custom-control-inline">
-                                <input type="radio" class="custom-control-input" id="size-2" name="size">
-                                <label class="custom-control-label" for="size-2">S</label>
-                            </div>
-                            <div class="custom-control custom-radio custom-control-inline">
-                                <input type="radio" class="custom-control-input" id="size-3" name="size">
-                                <label class="custom-control-label" for="size-3">M</label>
-                            </div>
-                            <div class="custom-control custom-radio custom-control-inline">
-                                <input type="radio" class="custom-control-input" id="size-4" name="size">
-                                <label class="custom-control-label" for="size-4">L</label>
-                            </div>
-                            <div class="custom-control custom-radio custom-control-inline">
-                                <input type="radio" class="custom-control-input" id="size-5" name="size">
-                                <label class="custom-control-label" for="size-5">XL</label>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="d-flex mb-4">
-                        <strong class="text-dark mr-3">Colors:</strong>
-                        <form>
-                            <div class="custom-control custom-radio custom-control-inline">
-                                <input type="radio" class="custom-control-input" id="color-1" name="color">
-                                <label class="custom-control-label" for="color-1">Black</label>
-                            </div>
-                            <div class="custom-control custom-radio custom-control-inline">
-                                <input type="radio" class="custom-control-input" id="color-2" name="color">
-                                <label class="custom-control-label" for="color-2">White</label>
-                            </div>
-                            <div class="custom-control custom-radio custom-control-inline">
-                                <input type="radio" class="custom-control-input" id="color-3" name="color">
-                                <label class="custom-control-label" for="color-3">Red</label>
-                            </div>
-                            <div class="custom-control custom-radio custom-control-inline">
-                                <input type="radio" class="custom-control-input" id="color-4" name="color">
-                                <label class="custom-control-label" for="color-4">Blue</label>
-                            </div>
-                            <div class="custom-control custom-radio custom-control-inline">
-                                <input type="radio" class="custom-control-input" id="color-5" name="color">
-                                <label class="custom-control-label" for="color-5">Green</label>
-                            </div>
-                        </form>
-                    </div>
+                    {% if price %}
+                        {% if not special %}
+                            <h3 class="font-weight-semi-bold mb-4">{{ price }}</h3>
+                        {% else %}
+                            <h3 class="font-weight-semi-bold mb-4">
+                                {{ special }}
+                                <small class="text-muted ml-2">
+                                    <del>{{ price }}</del>
+                                </small>
+                            </h3>
+                        {% endif %}
+                    {% endif %}
+
+                    <p><strong>{{ text_stock }}</strong> {{ stock }}</p>
+
+                    {% if options %}
+
+                        {% for option in options %}
+
+                            {% if option.type == 'radio' %}
+                                <div class="d-flex mb-3{% if option.required %} required-option {% endif %}"
+                                     id="input-option{{ option.product_option_id }}">
+                                    <strong class="text-dark mr-3">Sizes:</strong>
+
+                                    {% for option_value in option.product_option_value %}
+                                        <div class="custom-control custom-radio custom-control-inline">
+                                            <input type="radio" class="custom-control-input"
+                                                   id="option-{{ option.product_option_id }}{{ loop.index }}"
+                                                   name="option[{{ option.product_option_id }}]"
+                                                   value="{{ option_value.product_option_value_id }}">
+                                            <label class="custom-control-label"
+                                                   for="option-{{ option.product_option_id }}{{ loop.index }}">
+                                                {{ option_value.name }}
+                                                {% if option_value.price %}
+                                                    ({{ option_value.price_prefix }}{{ option_value.price }})
+                                                {% endif %}
+                                            </label>
+                                        </div>
+                                    {% endfor %}
+
+                                </div>
+                            {% endif %}
+
+                        {% endfor %}
+
+                    {% endif %}
+
                     <div class="d-flex align-items-center mb-4 pt-2">
                         <div class="input-group quantity mr-3" style="width: 130px;">
                             <div class="input-group-btn">
@@ -139,34 +132,22 @@
                                     <i class="fa fa-minus"></i>
                                 </button>
                             </div>
-                            <input type="text" class="form-control bg-secondary border-0 text-center" value="1">
+                            <input type="text" name="quantity" class="form-control bg-secondary border-0 text-center" value="{{ minimum }}" id="input-quantity">
+                            <input type="hidden" name="product_id" value="{{ product_id }}" />
                             <div class="input-group-btn">
                                 <button class="btn btn-primary btn-plus">
                                     <i class="fa fa-plus"></i>
                                 </button>
                             </div>
                         </div>
-                        <button class="btn btn-primary px-3"><i class="fa fa-shopping-cart mr-1"></i> Add To
-                            Cart
+                        <button type="button" class="btn btn-primary px-3" id="button-cart" data-loading-text="{{ text_loading }}"><i class="fa fa-shopping-cart mr-1"></i> {{ button_cart }}
                         </button>
                     </div>
-                    <div class="d-flex pt-2">
-                        <strong class="text-dark mr-2">Share on:</strong>
-                        <div class="d-inline-flex">
-                            <a class="text-dark px-2" href="">
-                                <i class="fab fa-facebook-f"></i>
-                            </a>
-                            <a class="text-dark px-2" href="">
-                                <i class="fab fa-twitter"></i>
-                            </a>
-                            <a class="text-dark px-2" href="">
-                                <i class="fab fa-linkedin-in"></i>
-                            </a>
-                            <a class="text-dark px-2" href="">
-                                <i class="fab fa-pinterest"></i>
-                            </a>
-                        </div>
-                    </div>
+
+                    {% if minimum > 1 %}
+                        <div class="alert alert-info"><i class="fa fa-info-circle"></i> {{ text_minimum }}</div>
+                    {% endif %}
+
                 </div><!-- ./h-100 bg-light p-30 -->
                 {{ content_bottom }}
             </div><!-- ./class h-auto mb-30 -->
@@ -176,5 +157,196 @@
 
 </div><!-- #product-product -->
 
+<script type="text/javascript"><!--
+    $('select[name=\'recurring_id\'], input[name="quantity"]').change(function(){
+        $.ajax({
+            url: 'index.php?route=product/product/getRecurringDescription',
+            type: 'post',
+            data: $('input[name=\'product_id\'], input[name=\'quantity\'], select[name=\'recurring_id\']'),
+            dataType: 'json',
+            beforeSend: function() {
+                $('#recurring-description').html('');
+            },
+            success: function(json) {
+                $('.alert-dismissible, .text-danger').remove();
 
+                if (json['success']) {
+                    $('#recurring-description').html(json['success']);
+                }
+            }
+        });
+    });
+    //--></script>
+<script type="text/javascript"><!--
+    $('#button-cart').on('click', function() {
+        $.ajax({
+            url: 'index.php?route=checkout/cart/add',
+            type: 'post',
+            data: $('#product input[type=\'text\'], #product input[type=\'hidden\'], #product input[type=\'radio\']:checked, #product input[type=\'checkbox\']:checked, #product select, #product textarea'),
+            dataType: 'json',
+            beforeSend: function() {
+                $('#button-cart').button('loading');
+            },
+            complete: function() {
+                $('#button-cart').button('reset');
+            },
+            success: function(json) {
+                $('.alert-dismissible, .text-danger').remove();
+                $('.form-group').removeClass('has-error');
+
+                if (json['error']) {
+                    if (json['error']['option']) {
+                        for (i in json['error']['option']) {
+                            var element = $('#input-option' + i.replace('_', '-'));
+
+                            if (element.parent().hasClass('input-group')) {
+                                element.parent().after('<div class="text-danger">' + json['error']['option'][i] + '</div>');
+                            } else {
+                                element.after('<div class="text-danger">' + json['error']['option'][i] + '</div>');
+                            }
+                        }
+                    }
+
+                    if (json['error']['recurring']) {
+                        $('select[name=\'recurring_id\']').after('<div class="text-danger">' + json['error']['recurring'] + '</div>');
+                    }
+
+                    // Highlight any found errors
+                    $('.text-danger').parent().addClass('has-error');
+                }
+
+                if (json['success']) {
+                    $('span.cart-info').html(json['total']);
+                    $('#modal-cart .modal-body').load('index.php?route=common/cart/info .in-cart');
+                    $('#modal-cart').modal();
+                }
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+                alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+            }
+        });
+    });
+    //--></script>
+<script type="text/javascript"><!--
+    $('.date').datetimepicker({
+        language: '{{ datepicker }}',
+        pickTime: false
+    });
+
+    $('.datetime').datetimepicker({
+        language: '{{ datepicker }}',
+        pickDate: true,
+        pickTime: true
+    });
+
+    $('.time').datetimepicker({
+        language: '{{ datepicker }}',
+        pickDate: false
+    });
+
+    $('button[id^=\'button-upload\']').on('click', function() {
+        var node = this;
+
+        $('#form-upload').remove();
+
+        $('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input type="file" name="file" /></form>');
+
+        $('#form-upload input[name=\'file\']').trigger('click');
+
+        if (typeof timer != 'undefined') {
+            clearInterval(timer);
+        }
+
+        timer = setInterval(function() {
+            if ($('#form-upload input[name=\'file\']').val() != '') {
+                clearInterval(timer);
+
+                $.ajax({
+                    url: 'index.php?route=tool/upload',
+                    type: 'post',
+                    dataType: 'json',
+                    data: new FormData($('#form-upload')[0]),
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    beforeSend: function() {
+                        $(node).button('loading');
+                    },
+                    complete: function() {
+                        $(node).button('reset');
+                    },
+                    success: function(json) {
+                        $('.text-danger').remove();
+
+                        if (json['error']) {
+                            $(node).parent().find('input').after('<div class="text-danger">' + json['error'] + '</div>');
+                        }
+
+                        if (json['success']) {
+                            alert(json['success']);
+
+                            $(node).parent().find('input').val(json['code']);
+                        }
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                        alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+                    }
+                });
+            }
+        }, 500);
+    });
+    //--></script>
+<script type="text/javascript"><!--
+    $('#review').delegate('.pagination a', 'click', function(e) {
+        e.preventDefault();
+
+        $('#review').fadeOut('slow');
+
+        $('#review').load(this.href);
+
+        $('#review').fadeIn('slow');
+    });
+
+    $('#review').load('index.php?route=product/product/review&product_id={{ product_id }}');
+
+    $('#button-review').on('click', function() {
+        $.ajax({
+            url: 'index.php?route=product/product/write&product_id={{ product_id }}',
+            type: 'post',
+            dataType: 'json',
+            data: $("#form-review").serialize(),
+            beforeSend: function() {
+                $('#button-review').button('loading');
+            },
+            complete: function() {
+                $('#button-review').button('reset');
+            },
+            success: function(json) {
+                $('.alert-dismissible').remove();
+
+                if (json['error']) {
+                    $('#review').after('<div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + '</div>');
+                }
+
+                if (json['success']) {
+                    $('#review').after('<div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> ' + json['success'] + '</div>');
+
+                    $('input[name=\'name\']').val('');
+                    $('textarea[name=\'text\']').val('');
+                    $('input[name=\'rating\']:checked').prop('checked', false);
+                }
+            }
+        });
+    });
+
+    $(document).ready(function() {
+        $('.thumbnails').magnificPopup({
+            type:'image',
+            delegate: 'a',
+            gallery: {
+                enabled: true
+            }
+        });
+    });
+    //--></script>
 {{ footer }}

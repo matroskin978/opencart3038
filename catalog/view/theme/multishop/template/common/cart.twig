@@ -1,7 +1,7 @@
 <a href="" class="btn px-0 ml-2" data-toggle="modal" data-target="#modal-cart">
     <i class="fas fa-shopping-cart text-dark"></i>
-    <span class="badge text-dark border border-dark rounded-circle cart-info" style="padding-bottom: 2px;">{{ text_items
-        }}</span>
+    <span class="badge text-dark border border-dark rounded-circle cart-info"
+          style="padding-bottom: 2px;">{{ text_items }}</span>
 </a>
 
 <!-- Modal -->
@@ -17,41 +17,51 @@
             <div class="modal-body">
                 <div class="in-cart">
                     {% if products %}
-                    <div class="table-esponsive">
-                        <table class="table">
-                            <tbody>
+                        <div class="table-esponsive">
+                            <table class="table">
+                                <tbody>
                                 {% for product in products %}
-                                <tr class="text-left">
-                                    <td>
-                                        <a href="{{ product.href }}"><img src="{{ product.thumb }}" alt=""></a>
-                                    </td>
-                                    <td>
-                                        <a href="{{ product.href }}">{{ product.name }}</a>
-                                        {% if product.option %}
-                                        {% for option in product.option %} <br />
-                                        - <small>{{ option.name }} {{ option.value }}</small> {% endfor %}
-                                        {% endif %}
-                                        {% if product.recurring %} <br />
-                                        - <small>{{ text_recurring }} {{ product.recurring }}</small> {% endif %}
-                                    </td>
-                                    <td class="td-qty">
-                                        <input type="number" value="{{ product.quantity }}" min="1" data-qty="{{ product.quantity }}" data-id="{{ product.product_id }}">
-                                    </td>
-                                    <td>{{ product.price }}</td>
-                                    <td>{{ product.total }}</td>
-                                    <td>
-                                        <button class="btn btn-danger" type="button"
-                                            onclick="cart.remove('{{ product.cart_id }}');"><i
-                                                class="fa fa-times"></i></button>
-                                        <button class="btn btn-warning update-cart-product" type="button"><i class="fas fa-sync-alt"></i></button>
-                                    </td>
-                                </tr>
+                                    <tr class="text-left">
+                                        <td>
+                                            <a href="{{ product.href }}"><img src="{{ product.thumb }}" alt=""></a>
+                                        </td>
+                                        <td>
+                                            <a href="{{ product.href }}">{{ product.name }}</a>
+                                            {% if product.option %}
+                                                {% for option in product.option %} <br/>
+                                                    - <small>{{ option.name }} {{ option.value }}</small> {% endfor %}
+                                            {% endif %}
+                                            {% if product.recurring %} <br/>
+                                                -
+                                                <small>{{ text_recurring }} {{ product.recurring }}</small> {% endif %}
+                                        </td>
+                                        <td class="td-qty">
+                                            {% if product.option %}
+                                                {{ product.quantity }}
+                                            {% else %}
+                                                <input type="number" value="{{ product.quantity }}" min="1"
+                                                       data-qty="{{ product.quantity }}"
+                                                       data-id="{{ product.product_id }}">
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ product.price }}</td>
+                                        <td>{{ product.total }}</td>
+                                        <td>
+                                            <button class="btn btn-danger" type="button"
+                                                    onclick="cart.remove('{{ product.cart_id }}');"><i
+                                                        class="fa fa-times"></i></button>
+                                            {% if not product.option %}
+                                                <button class="btn btn-warning update-cart-product" type="button"><i
+                                                            class="fas fa-sync-alt"></i></button>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
                                 {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
+                                </tbody>
+                            </table>
+                        </div>
                     {% else %}
-                    <p class="text-left">{{ text_empty }}</p>
+                        <p class="text-left">{{ text_empty }}</p>
                     {% endif %}
                     <table class="table table-bordered">
                         {% for total in totals %}
