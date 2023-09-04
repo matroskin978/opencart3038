@@ -132,15 +132,18 @@
                                     <i class="fa fa-minus"></i>
                                 </button>
                             </div>
-                            <input type="text" name="quantity" class="form-control bg-secondary border-0 text-center" value="{{ minimum }}" id="input-quantity">
-                            <input type="hidden" name="product_id" value="{{ product_id }}" />
+                            <input type="text" name="quantity" class="form-control bg-secondary border-0 text-center"
+                                   value="{{ minimum }}" id="input-quantity">
+                            <input type="hidden" name="product_id" value="{{ product_id }}"/>
                             <div class="input-group-btn">
                                 <button class="btn btn-primary btn-plus">
                                     <i class="fa fa-plus"></i>
                                 </button>
                             </div>
                         </div>
-                        <button type="button" class="btn btn-primary px-3" id="button-cart" data-loading-text="{{ text_loading }}"><i class="fa fa-shopping-cart mr-1"></i> {{ button_cart }}
+                        <button type="button" class="btn btn-primary px-3" id="button-cart"
+                                data-loading-text="{{ text_loading }}"><i
+                                    class="fa fa-shopping-cart mr-1"></i> {{ button_cart }}
                         </button>
                     </div>
 
@@ -153,21 +156,200 @@
             </div><!-- ./class h-auto mb-30 -->
 
         </div><!-- ./row px-xl-5 -->
+
+        <div class="row px-xl-5">
+            <div class="col">
+                <div class="bg-light p-30">
+                    <div class="nav nav-tabs mb-4">
+                        <a class="nav-item nav-link text-dark active" data-toggle="tab"
+                           href="#tab-description">{{ tab_description }}</a>
+
+                        {% if attribute_groups %}
+                            <a class="nav-item nav-link text-dark" data-toggle="tab"
+                               href="#tab-specification">{{ tab_attribute }}</a>
+                        {% endif %}
+
+                        {% if review_status %}
+                            <a class="nav-item nav-link text-dark" data-toggle="tab"
+                               href="#tab-review">{{ tab_review }}</a>
+                        {% endif %}
+                    </div>
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="tab-description">
+                            {{ description }}
+                        </div>
+
+                        {% if attribute_groups %}
+                            <div class="tab-pane fade" id="tab-specification">
+                                <table class="table table-bordered">
+                                    {% for attribute_group in attribute_groups %}
+                                        <thead>
+                                        <tr>
+                                            <td colspan="2"><strong>{{ attribute_group.name }}</strong></td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for attribute in attribute_group.attribute %}
+                                            <tr>
+                                                <td>{{ attribute.name }}</td>
+                                                <td>{{ attribute.text }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    {% endfor %}
+                                </table>
+                            </div>
+                        {% endif %}
+
+                        {% if review_status %}
+                            <div class="tab-pane fade" id="tab-review">
+                                <form class="form-horizontal" id="form-review">
+                                    <div id="review"></div>
+                                    <h2>{{ text_write }}</h2>
+                                    {% if review_guest %}
+                                        <div class="form-group row required">
+                                            <div class="col-sm-12">
+                                                <label class="control-label" for="input-name">{{ entry_name }}</label>
+                                                <input type="text" name="name" value="{{ customer_name }}"
+                                                       id="input-name" class="form-control"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row required">
+                                            <div class="col-sm-12">
+                                                <label class="control-label"
+                                                       for="input-review">{{ entry_review }}</label>
+                                                <textarea name="text" rows="5" id="input-review"
+                                                          class="form-control"></textarea>
+                                                <div class="help-block">{{ text_note }}</div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row required">
+                                            <div class="col-sm-12">
+                                                <label class="control-label">{{ entry_rating }}</label>
+                                                &nbsp;&nbsp;&nbsp; {{ entry_bad }}&nbsp;
+                                                <input type="radio" name="rating" value="1"/>
+                                                &nbsp;
+                                                <input type="radio" name="rating" value="2"/>
+                                                &nbsp;
+                                                <input type="radio" name="rating" value="3"/>
+                                                &nbsp;
+                                                <input type="radio" name="rating" value="4"/>
+                                                &nbsp;
+                                                <input type="radio" name="rating" value="5"/>
+                                                &nbsp;{{ entry_good }}</div>
+                                        </div>
+                                        {{ captcha }}
+                                        <div class="buttons clearfix">
+                                            <div class="pull-right">
+                                                <button type="button" id="button-review"
+                                                        data-loading-text="{{ text_loading }}"
+                                                        class="btn btn-primary">{{ button_continue }}</button>
+                                            </div>
+                                        </div>
+                                    {% else %}
+                                        {{ text_login }}
+                                    {% endif %}
+                                </form>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div><!-- ./container-fluid pb-5 -->
+
+    {% if products %}
+        <div class="container-fluid py-5">
+            <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span
+                        class="bg-secondary pr-3">{{ text_related }}</span>
+            </h2>
+            <div class="row px-xl-5">
+                <div class="col">
+                    <div class="owl-carousel related-carousel">
+                        {% for product in products %}
+                            <div class="product-item bg-light">
+                                <div class="product-img position-relative overflow-hidden">
+                                    <img class="img-fluid w-100" src="{{ product.thumb }}" alt="">
+                                    <div class="product-action">
+                                        <button type="button" onclick="cart.add('{{ product.product_id }}');"
+                                                class="btn btn-outline-dark btn-square" href="">
+                                            <i class="fa fa-shopping-cart"></i>
+                                        </button>
+                                        <button type="button" onclick="wishlist.add('{{ product.product_id }}');"
+                                                class="btn btn-outline-dark btn-square" href="">
+                                            <i class="far fa-heart"></i>
+                                        </button>
+                                        <button type="button" onclick="compare.add('{{ product.product_id }}');"
+                                                class="btn btn-outline-dark btn-square" href="">
+                                            <i class="fa fa-sync-alt"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="text-center py-4">
+                                    <a class="h6 text-decoration-none text-truncate"
+                                       href="{{ product.href }}">{{ product.name }}</a>
+                                    {% if product.price %}
+                                        <div class="d-flex align-items-center justify-content-center mt-2">
+                                            {% if not product.special %}
+                                                <h5>{{ product.price }}</h5>
+                                            {% else %}
+                                                <h5>{{ product.special }}</h5>
+                                                <h6 class="text-muted ml-2">
+                                                    <del>{{ product.price }}</del>
+                                                </h6>
+                                            {% endif %}
+                                        </div>
+                                    {% endif %}
+
+                                    <div class="d-flex align-items-center justify-content-center mb-1">
+                                        {% for i in 1..5 %}
+                                            {% if product.rating < i %}
+                                                <small class="far fa-star text-primary mr-1"></small>
+                                            {% else %}
+                                                <small class="fa fa-star text-primary mr-1"></small>
+                                            {% endif %}
+                                        {% endfor %}
+                                        <small>({{ product.reviews }})</small>
+                                    </div>
+
+                                    <div class="cart-buttons mt-2">
+                                        <button type="button" onclick="cart.add('{{ product.product_id }}');"
+                                                class="btn btn-outline-dark btn-square" href="">
+                                            <i class="fa fa-shopping-cart"></i>
+                                        </button>
+                                        <button type="button" onclick="wishlist.add('{{ product.product_id }}');"
+                                                class="btn btn-outline-dark btn-square" href="">
+                                            <i class="far fa-heart"></i>
+                                        </button>
+                                        <button type="button" onclick="compare.add('{{ product.product_id }}');"
+                                                class="btn btn-outline-dark btn-square" href="">
+                                            <i class="fa fa-sync-alt"></i>
+                                        </button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 
 </div><!-- #product-product -->
 
 <script type="text/javascript"><!--
-    $('select[name=\'recurring_id\'], input[name="quantity"]').change(function(){
+    $('select[name=\'recurring_id\'], input[name="quantity"]').change(function () {
         $.ajax({
             url: 'index.php?route=product/product/getRecurringDescription',
             type: 'post',
             data: $('input[name=\'product_id\'], input[name=\'quantity\'], select[name=\'recurring_id\']'),
             dataType: 'json',
-            beforeSend: function() {
+            beforeSend: function () {
                 $('#recurring-description').html('');
             },
-            success: function(json) {
+            success: function (json) {
                 $('.alert-dismissible, .text-danger').remove();
 
                 if (json['success']) {
@@ -178,19 +360,19 @@
     });
     //--></script>
 <script type="text/javascript"><!--
-    $('#button-cart').on('click', function() {
+    $('#button-cart').on('click', function () {
         $.ajax({
             url: 'index.php?route=checkout/cart/add',
             type: 'post',
             data: $('#product input[type=\'text\'], #product input[type=\'hidden\'], #product input[type=\'radio\']:checked, #product input[type=\'checkbox\']:checked, #product select, #product textarea'),
             dataType: 'json',
-            beforeSend: function() {
+            beforeSend: function () {
                 $('#button-cart').button('loading');
             },
-            complete: function() {
+            complete: function () {
                 $('#button-cart').button('reset');
             },
-            success: function(json) {
+            success: function (json) {
                 $('.alert-dismissible, .text-danger').remove();
                 $('.form-group').removeClass('has-error');
 
@@ -221,7 +403,7 @@
                     $('#modal-cart').modal();
                 }
             },
-            error: function(xhr, ajaxOptions, thrownError) {
+            error: function (xhr, ajaxOptions, thrownError) {
                 alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
             }
         });
@@ -244,7 +426,7 @@
         pickDate: false
     });
 
-    $('button[id^=\'button-upload\']').on('click', function() {
+    $('button[id^=\'button-upload\']').on('click', function () {
         var node = this;
 
         $('#form-upload').remove();
@@ -257,7 +439,7 @@
             clearInterval(timer);
         }
 
-        timer = setInterval(function() {
+        timer = setInterval(function () {
             if ($('#form-upload input[name=\'file\']').val() != '') {
                 clearInterval(timer);
 
@@ -269,13 +451,13 @@
                     cache: false,
                     contentType: false,
                     processData: false,
-                    beforeSend: function() {
+                    beforeSend: function () {
                         $(node).button('loading');
                     },
-                    complete: function() {
+                    complete: function () {
                         $(node).button('reset');
                     },
-                    success: function(json) {
+                    success: function (json) {
                         $('.text-danger').remove();
 
                         if (json['error']) {
@@ -288,7 +470,7 @@
                             $(node).parent().find('input').val(json['code']);
                         }
                     },
-                    error: function(xhr, ajaxOptions, thrownError) {
+                    error: function (xhr, ajaxOptions, thrownError) {
                         alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
                     }
                 });
@@ -297,7 +479,7 @@
     });
     //--></script>
 <script type="text/javascript"><!--
-    $('#review').delegate('.pagination a', 'click', function(e) {
+    $('#review').delegate('.pagination a', 'click', function (e) {
         e.preventDefault();
 
         $('#review').fadeOut('slow');
@@ -309,27 +491,29 @@
 
     $('#review').load('index.php?route=product/product/review&product_id={{ product_id }}');
 
-    $('#button-review').on('click', function() {
+    $('#button-review').on('click', function () {
         $.ajax({
             url: 'index.php?route=product/product/write&product_id={{ product_id }}',
             type: 'post',
             dataType: 'json',
             data: $("#form-review").serialize(),
-            beforeSend: function() {
+            beforeSend: function () {
                 $('#button-review').button('loading');
             },
-            complete: function() {
+            complete: function () {
                 $('#button-review').button('reset');
             },
-            success: function(json) {
+            success: function (json) {
                 $('.alert-dismissible').remove();
 
                 if (json['error']) {
-                    $('#review').after('<div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + '</div>');
+                    alert(json['error']);
+                    $('#button-review').after('<div class="alert alert-danger alert-dismissible my-2"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + '</div>');
                 }
 
                 if (json['success']) {
-                    $('#review').after('<div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> ' + json['success'] + '</div>');
+                    alert(json['success']);
+                    $('#button-review').after('<div class="alert alert-success alert-dismissible my-2"><i class="fa fa-check-circle"></i> ' + json['success'] + '</div>');
 
                     $('input[name=\'name\']').val('');
                     $('textarea[name=\'text\']').val('');
@@ -339,9 +523,9 @@
         });
     });
 
-    $(document).ready(function() {
+    $(document).ready(function () {
         $('.thumbnails').magnificPopup({
-            type:'image',
+            type: 'image',
             delegate: 'a',
             gallery: {
                 enabled: true
