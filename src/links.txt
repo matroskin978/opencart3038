@@ -1,5 +1,9 @@
 https://www.antropy.co.uk/blog/how-to-create-an-opencart-3-theme
 https://www.free-css.com/free-css-templates/page280/multishop
 
-Go setting search emmet, go include languages, press add item fill form with item:twig, value:html.
+https://opencart3x.ru/module/seo-smm/seo-pro
+
+INSERT INTO
+`oc_seo_url`(`store_id`,`language_id`,`query`,`keyword`)
+ VALUES (0, 2, 'common/home', ''), (0, 1, 'common/home', 'en');
 

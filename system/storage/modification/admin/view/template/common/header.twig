@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html dir="{{ direction }}" lang="{{ lang }}">
+<head>
+<meta charset="UTF-8" />
+<title>{{ title }}</title>
+<base href="{{ base }}" />
+{% if description %}
+<meta name="description" content="{{ description }}" />
+{% endif %}
+{% if keywords %}
+<meta name="keywords" content="{{ keywords }}" />
+{% endif %}
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+<script type="text/javascript" src="view/javascript/jquery/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="view/javascript/bootstrap/js/bootstrap.min.js"></script>
+<link href="view/stylesheet/bootstrap.css" type="text/css" rel="stylesheet" />
+<link href="view/javascript/font-awesome/css/font-awesome.min.css" type="text/css" rel="stylesheet" />
+<script src="view/javascript/jquery/datetimepicker/moment/moment.min.js" type="text/javascript"></script>
+<script src="view/javascript/jquery/datetimepicker/moment/moment-with-locales.min.js" type="text/javascript"></script>
+<script src="view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+<link href="view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css" type="text/css" rel="stylesheet" media="screen" />
+<link type="text/css" href="view/stylesheet/stylesheet.css" rel="stylesheet" media="screen" />
+{% for style in styles %}
+<link type="text/css" href="{{ style.href }}" rel="{{ style.rel }}" media="{{ style.media }}" />
+{% endfor %}
+{% for link in links %}
+<link href="{{ link.href }}" rel="{{ link.rel }}" />
+{% endfor %}
+<script src="view/javascript/common.js" type="text/javascript"></script>
+{% for script in scripts %}
+<script type="text/javascript" src="{{ script }}"></script>
+{% endfor %}
+</head>
+<body>
+<div id="container">
+<header id="header" class="navbar navbar-static-top">
+  <div class="container-fluid">
+    <div id="header-logo" class="navbar-header"><a href="{{ home }}" class="navbar-brand"><img src="view/image/logo.png" alt="{{ heading_title }}" title="{{ heading_title }}" /></a></div>
+    {% if logged %}<a href="#" id="button-menu" class="hidden-md hidden-lg"><span class="fa fa-bars"></span></a>
+
+{% if storage_cleaner %}
+<script type="text/javascript"><!--
+$(document).ready(function() {
+	$('.clear-dropdown li, .clear-dropdown a').on('click', function(e) {
+		e.stopPropagation();
+	});
+});
+
+function clearOption(type, key) {
+	var oc3x_size = $('.clear-dropdown').prev('a').children('span').html();
+	var oc3x_type = type + '-' + key;
+
+	$.ajax({
+		url: 'index.php?route=extension/module/oc3x_storage_cleaner/clear' + type + '&user_token=' + getURLVar('user_token'),
+		type: 'post',
+		data: 'key=' + key,
+		dataType: 'json',
+		beforeSend: function() {
+			$('.clear-dropdown').prev('a').children('span').html('<i class=\'fa fa-spinner\'></i>');
+			$('#button-' + oc3x_type + ' span').html('<i class=\'fa fa-spinner\'></i>');
+		},
+		error: function(xhr, ajaxOptions, thrownError) {
+			alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+		},
+		success: function(json) {
+			$('.clear-dropdown > .alert-success, .clear-dropdown > .alert-danger').remove();
+
+			if (json['success']) {
+				$('#button-' + oc3x_type).closest('li').addClass('bg-success');
+				$('.clear-dropdown').append('<div class="alert alert-success" style="margin: 15px 20px 15px 20px; padding: 5px; font-size: 11px;"><i class="fa fa-check-circle"></i> ' + json['success'] + '<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+
+				if (json['size']) {
+					$('.clear-dropdown').prev('a').children('span').html(json['size']['all']);
+					$('#button-' + oc3x_type + ' span').html(json['size'][oc3x_type]);
+				}
+			}
+
+			if (json['error']) {
+				$('.clear-dropdown').prev('a').children('span').html(oc3x_size);
+				$('#button-' + oc3x_type).closest('li').addClass('bg-danger');
+				$('.clear-dropdown').append('<div class="alert alert-danger" style="margin: 15px 20px 15px 20px; padding: 5px; font-size: 11px;"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + '<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+			}
+		}
+	});
+}
+
+function clearAll() {
+	clearOption('cache', 'system');
+	clearOption('cache', 'modification');
+	clearOption('cache', 'image');
+	clearOption('log', 'error');
+	clearOption('log', 'modification');
+}
+//--></script>
+{% endif %}
+			
+    <ul class="nav navbar-nav navbar-right">
+
+	{% if storage_cleaner %}
+	<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown">{% if text_cleaner_size %}<span class="label label-info pull-left" style="margin-top:23px;margin-right:4px;">{{ text_cleaner_size['all'] }}</span>{% endif %}<i class="fa fa-eraser fa-lg"></i></a>
+	  <ul class="dropdown-menu dropdown-menu-right clear-dropdown" style="width: 230px;">
+		<li class="dropdown-header">{{ text_cache }}</li>
+		<li><a>{{ text_cache_system }}<button onclick="clearOption('cache', 'system');" type="button" data-loading-text="<i class='fa fa-spinner'></i>" data-toggle="tooltip" title="{{ text_clear }}" class="btn btn-danger btn-xs pull-right" id="button-cache-system">{% if text_cleaner_size %}<span>{{ text_cleaner_size['cache-system'] }}</span>{% endif %} <i class="fa fa-eraser"></i></button></a></li>
+		<li><a>{{ text_cache_modification }}<button onclick="clearOption('cache', 'modification');" type="button" data-loading-text="<i class='fa fa-spinner'></i>" data-toggle="tooltip" title="{{ text_refresh }}" class="btn btn-danger btn-xs pull-right" id="button-cache-modification">{% if text_cleaner_size %}<span>{{ text_cleaner_size['cache-modification'] }}</span>{% endif %} <i class="fa fa-eraser"></i></button></a></li>
+		<li><a>{{ text_cache_image }}<button onclick="clearOption('cache', 'image');" type="button" data-loading-text="<i class='fa fa-spinner'></i>" data-toggle="tooltip" title="{{ text_clear }}" class="btn btn-danger btn-xs pull-right" id="button-cache-image">{% if text_cleaner_size %}<span>{{ text_cleaner_size['cache-image'] }}</span>{% endif %} <i class="fa fa-eraser"></i></button></a></li>
+		<li class="divider"></li>
+		<li class="dropdown-header">{{ text_log }}</li>
+		<li><a>{{ text_log_error }}<button onclick="clearOption('log', 'error');" type="button" data-loading-text="<i class='fa fa-spinner'></i>" data-toggle="tooltip" title="{{ text_clear }}" class="btn btn-danger btn-xs pull-right" id="button-log-error">{% if text_cleaner_size %}<span>{{ text_cleaner_size['log-error'] }}</span>{% endif %} <i class="fa fa-eraser"></i></button></a></li>
+		<li><a>{{ text_log_modification }}<button onclick="clearOption('log', 'modification');" type="button" data-loading-text="<i class='fa fa-spinner'></i>" data-toggle="tooltip" title="{{ text_clear }}" class="btn btn-danger btn-xs pull-right" id="button-log-modification">{% if text_cleaner_size %}<span>{{ text_cleaner_size['log-modification'] }}</span>{% endif %} <i class="fa fa-eraser"></i></button></a></li>
+		<li class="divider"></li>
+		<li><a><button onclick="clearAll();" type="button" data-loading-text="<i class='fa fa-spinner'></i>" class="btn btn-danger btn-sm btn-block" id="button-clear-all">{{ text_clear_all }}<span class="pull-right"><i class="fa fa-eraser"></i></span></button></a></li>
+	  </ul>
+	</li>
+	{% endif %}
+			
+      <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="{{ image }}" alt="{{ firstname }} {{ lastname }}" title="{{ username }}" id="user-profile" class="img-circle" />{{ firstname }} {{ lastname }} <i class="fa fa-caret-down fa-fw"></i></a>
+        <ul class="dropdown-menu dropdown-menu-right">
+          <li><a href="{{ profile }}"><i class="fa fa-user-circle-o fa-fw"></i> {{ text_profile }}</a></li>
+          <li role="separator" class="divider"></li>
+          <li class="dropdown-header">{{ text_store }}</li>
+          {% for store in stores %}
+          <li><a href="{{ store.href }}" target="_blank">{{ store.name }}</a></li>
+          {% endfor %}
+          <li role="separator" class="divider"></li>
+          <li class="dropdown-header">{{ text_help }}</li>
+          <li><a href="https://www.opencart.com" target="_blank"><i class="fa fa-opencart fa-fw"></i> {{ text_homepage }}</a></li>
+          <li><a href="http://docs.opencart.com" target="_blank"><i class="fa fa-file-text-o fa-fw"></i> {{ text_documentation }}</a></li>
+          <li><a href="https://forum.opencart.com" target="_blank"><i class="fa fa-comments-o fa-fw"></i> {{ text_support }}</a></li>
+        </ul>
+      </li>
+      <li><a href="{{ logout }}"><i class="fa fa-sign-out"></i> <span class="hidden-xs hidden-sm hidden-md">{{ text_logout }}</span></a></li>
+    </ul>
+    {% endif %} </div>
+</header>
