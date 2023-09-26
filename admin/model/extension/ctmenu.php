@@ -129,4 +129,32 @@ WHERE ml.id = " . (int)$menu_link_id);
         return $menu_description_data;
     }
 
+    public function getMenuLinkByLinkId($link_id)
+    {
+        $query = $this->db->query("SELECT * FROM ctmenu_link WHERE id = " . (int)$link_id);
+        return $query->row;
+    }
+
+    public function deleteMenuLink($menu_link_id)
+    {
+        $menu_link_id = (int)$menu_link_id;
+        $query = $this->db->query("SELECT COUNT(*) AS cnt FROM `ctmenu_link` WHERE parent_id = {$menu_link_id}");
+        if (!$query->row['cnt']) {
+            $this->db->query("DELETE FROM `ctmenu_link` WHERE id = {$menu_link_id}");
+            $this->db->query("DELETE FROM `ctmenu_link_description` WHERE menu_link_id = {$menu_link_id}");
+            return true;
+        }
+        return false;
+    }
+
+    public function editMenuLink($menu_link_id, $data)
+    {
+        $menu_link_id = (int)$menu_link_id;
+        $this->db->query("UPDATE ctmenu_link SET parent_id = " . (int)$data['menu_description_parent'] . " WHERE id = {$menu_link_id}");
+
+        foreach ($data['menu_description'] as $language_id => $value) {
+            $this->db->query("UPDATE ctmenu_link_description SET title = '" . $this->db->escape($value['title']) . "', link = '" . $this->db->escape($value['link']) . "' WHERE menu_link_id = {$menu_link_id} AND language_id = " . (int)$language_id);
+        }
+    }
+
 }
