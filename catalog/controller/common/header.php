@@ -77,6 +77,10 @@ class ControllerCommonHeader extends Controller {
 		$data['cart'] = $this->load->controller('common/cart');
 		$data['menu'] = $this->load->controller('common/menu');
 
+		$data['top_menu'] = $this->load->controller('extension/ctmenu', ['id' => 2, 'tpl' => 'base']);
+
+
+
 		return $this->load->view('common/header', $data);
 	}
 }
