@@ -17,4 +17,33 @@ WHERE m.menu_id = {$menu_id} and md.language_id = {$language_id}");
         return $menu;
     }
 
+    public function getMapTree($dataset)
+    {
+        $tree = [];
+
+        foreach ($dataset as $id => &$node) {
+            if (!$node['parent_id']) {
+                $tree[$id] = &$node;
+            } else {
+                $dataset[$node['parent_id']]['children'][$id] = &$node;
+            }
+        }
+
+        return $tree;
+    }
+
+    public function treeToHtml($tree, $tpl, $dropdown_classes=""){
+        $str = '';
+        foreach ($tree as $item) {
+            $str .= $this->treeToTemplate($item, $tpl, $dropdown_classes);
+        }
+        return $str;
+    }
+
+    public function treeToTemplate($item, $tpl, $dropdown_classes=""){
+        ob_start();
+        require $tpl;
+        return ob_get_clean();
+    }
+
 }
