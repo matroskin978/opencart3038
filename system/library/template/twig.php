@@ -33,7 +33,9 @@ final class Twig
 		);
 
 		try {
-			$loader = new \Twig\Loader\ArrayLoader(array($filename . '.twig' => $code));
+			$loader1 = new \Twig\Loader\ArrayLoader(array($filename . '.twig' => $code));
+            $loader2 = new \Twig\Loader\FilesystemLoader([DIR_TEMPLATE]);
+            $loader = new \Twig\Loader\ChainLoader([$loader1, $loader2]);
 
 			$twig = new \Twig\Environment($loader, $config);
 			$twig->addExtension(new \Twig\Extension\DebugExtension);

@@ -22,7 +22,12 @@
 
 
     <!-- Shop Start -->
-    <div class="container-fluid">
+    <div class="container-fluid" style="position: relative;">
+
+        <div class="ajax-loader">
+            <img src="catalog/view/theme/multishop/assets/img/ripple.svg" alt="">
+        </div>
+
         <div class="row px-xl-5">
 
             {{ column_left }}
@@ -48,7 +53,8 @@
                     {% if thumb or description %}
                         {% if thumb %}
                             <div class="col-4 col-sm-2">
-                                <img src="{{ thumb }}" alt="{{ heading_title }}" title="{{ heading_title }}" class="img-thumbnail">
+                                <img src="{{ thumb }}" alt="{{ heading_title }}" title="{{ heading_title }}"
+                                     class="img-thumbnail">
                             </div>
                         {% endif %}
 
@@ -93,7 +99,7 @@
 
                 </div>
 
-                <div class="row pb-3">
+                <div class="row pb-3 products-items-sort">
 
                     {% if products %}
                         <div class="col-sm-6">
@@ -113,103 +119,17 @@
                                 </select>
                             </div>
                         </div>
+                    {% endif %}
+                </div>
 
-                        <div class="col-sm-6">
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <label class="input-group-text" for="limit-select">{{ text_limit }}</label>
-                                </div>
-                                <select class="custom-select" id="input-limit" onchange="location = this.value;">
-                                    {% for limits in limits %}
-                                        {% if limits.value == limit %}
-                                            <option value="{{ limits.href }}"
-                                                    selected="selected">{{ limits.text }}</option>
-                                        {% else %}
-                                            <option value="{{ limits.href }}">{{ limits.text }}</option>
-                                        {% endif %}
-                                    {% endfor %}
-                                </select>
-                            </div>
-                        </div>
+                <div class="row pb-3 product-items">
 
+                    {% if products %}
                         {% for product in products %}
                             <div class="{{ card }} col-sm-6 pb-1">
-                                <div class="product-item bg-light mb-4">
-                                    <div class="product-img position-relative overflow-hidden">
-                                        <img class="img-fluid w-100" src="{{ product.thumb }}" alt="">
-                                        <div class="product-action">
-                                            <button type="button" onclick="cart.add('{{ product.product_id }}');"
-                                                    class="btn btn-outline-dark btn-square" href="">
-                                                <i class="fa fa-shopping-cart"></i>
-                                            </button>
-                                            <button type="button" onclick="wishlist.add('{{ product.product_id }}');"
-                                                    class="btn btn-outline-dark btn-square" href="">
-                                                <i class="far fa-heart"></i>
-                                            </button>
-                                            <button type="button" onclick="compare.add('{{ product.product_id }}');"
-                                                    class="btn btn-outline-dark btn-square" href="">
-                                                <i class="fa fa-sync-alt"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="text-center py-4">
-                                        <a class="h6 text-decoration-none text-truncate"
-                                           href="{{ product.href }}">{{ product.name }}</a>
-                                        {% if product.price %}
-                                            <div class="d-flex align-items-center justify-content-center mt-2">
-                                                {% if not product.special %}
-                                                    <h5>{{ product.price }}</h5>
-                                                {% else %}
-                                                    <h5>{{ product.special }}</h5>
-                                                    <h6 class="text-muted ml-2">
-                                                        <del>{{ product.price }}</del>
-                                                    </h6>
-                                                {% endif %}
-                                            </div>
-                                        {% endif %}
-
-                                        <div class="d-flex align-items-center justify-content-center mb-1">
-                                            {% for i in 1..5 %}
-                                                {% if product.rating < i %}
-                                                    <small class="far fa-star text-primary mr-1"></small>
-                                                {% else %}
-                                                    <small class="fa fa-star text-primary mr-1"></small>
-                                                {% endif %}
-                                            {% endfor %}
-                                        </div>
-
-                                        <div class="cart-buttons mt-2">
-                                            <button type="button" onclick="cart.add('{{ product.product_id }}');"
-                                                    class="btn btn-outline-dark btn-square" href="">
-                                                <i class="fa fa-shopping-cart"></i>
-                                            </button>
-                                            <button type="button" onclick="wishlist.add('{{ product.product_id }}');"
-                                                    class="btn btn-outline-dark btn-square" href="">
-                                                <i class="far fa-heart"></i>
-                                            </button>
-                                            <button type="button" onclick="compare.add('{{ product.product_id }}');"
-                                                    class="btn btn-outline-dark btn-square" href="">
-                                                <i class="fa fa-sync-alt"></i>
-                                            </button>
-                                        </div>
-
-                                    </div>
-                                </div>
+                                {% include 'multishop/template/product_card.twig' %}
                             </div>
                         {% endfor %}
-
-                        <div class="col-12">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <nav>
-                                        {{ pagination }}
-                                    </nav>
-                                </div>
-                                <div class="col-md-6 text-right my-auto">
-                                    {{ results }}
-                                </div>
-                            </div>
-                        </div>
 
                     {% else %}
                         <div class="col-12">
@@ -218,6 +138,20 @@
                     {% endif %}
 
                 </div>
+
+                {% if products %}
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <nav class="nav-pagination">
+                                        {{ pagination }}
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
             </div>
             <!-- Shop Product End -->
 

@@ -1,0 +1,44 @@
+<div class="product-item bg-light mb-4">
+    <div class="product-img position-relative overflow-hidden">
+        <img class="img-fluid w-100" src="{{ product.thumb }}" alt="">
+        <div class="product-action">
+            <button type="button" onclick="cart.add('{{ product.product_id }}');" class="btn btn-outline-dark btn-square" href="">
+                <i class="fa fa-shopping-cart"></i>
+            </button>
+            <button type="button" onclick="wishlist.add('{{ product.product_id }}');" class="btn btn-outline-dark btn-square" href="">
+                <i class="far fa-heart"></i>
+            </button>
+            <button type="button" onclick="compare.add('{{ product.product_id }}');" class="btn btn-outline-dark btn-square" href="">
+                <i class="fa fa-sync-alt"></i>
+            </button>
+        </div>
+    </div>
+    <div class="text-center py-4">
+        <a class="h6 text-decoration-none text-truncate" href="{{ product.href }}">{{ product.name }}</a>
+        {% if product.price %}
+            <div class="d-flex align-items-center justify-content-center mt-2">
+                {% if not product.special %}
+                    <h5>{{ product.price }}</h5>
+                {% else %}
+                    <h5>{{ product.special }}</h5>
+                    <h6 class="text-muted ml-2">
+                        <del>{{ product.price }}</del>
+                    </h6>
+                {% endif %}
+            </div>
+        {% endif %}
+
+        <div class="cart-buttons mt-2">
+            <button type="button" onclick="cart.add('{{ product.product_id }}');" class="btn btn-outline-dark btn-square" href="">
+                <i class="fa fa-shopping-cart"></i>
+            </button>
+            <button type="button" onclick="wishlist.add('{{ product.product_id }}');" class="btn btn-outline-dark btn-square" href="">
+                <i class="far fa-heart"></i>
+            </button>
+            <button type="button" onclick="compare.add('{{ product.product_id }}');" class="btn btn-outline-dark btn-square" href="">
+                <i class="fa fa-sync-alt"></i>
+            </button>
+        </div>
+
+    </div>
+</div>

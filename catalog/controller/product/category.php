@@ -352,6 +352,27 @@ class ControllerProductCategory extends Controller {
 			$data['order'] = $order;
 			$data['limit'] = $limit;
 
+            if ($this->isAjax()) {
+                $products = '';
+                if ($data['products']) {
+                    foreach ($data['products'] as $product) {
+                        $arr['product'] = $product;
+                        $products .= '<div class="col-lg-4 col-sm-6 pb-1">' . $this->load->view('product_card', $arr) . '</div>';
+                    }
+                }
+                ob_start();
+                require DIR_TEMPLATE . $this->config->get('config_theme') . "/template/category_sorts.php";
+                $ajax_sorts = ob_get_clean();
+                $res = [
+                    'url' => $_GET['url'],
+                    'sorts' => $ajax_sorts,
+                    'pagination' => $data['pagination'],
+                    'products' => $products ?: '<div class="col"><p>По Вашему запросу ничего не найдено...</p></div>',
+                ];
+                echo json_encode($res);
+                die;
+            }
+
 			$data['continue'] = $this->url->link('common/home');
 
 			$data['column_left'] = $this->load->controller('common/column_left');
@@ -410,4 +431,9 @@ class ControllerProductCategory extends Controller {
 			$this->response->setOutput($this->load->view('error/not_found', $data));
 		}
 	}
+
+    protected function isAjax()
+    {
+        return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest';
+    }
 }
