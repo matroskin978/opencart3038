@@ -1,0 +1,48 @@
+<div class="panel panel-default">
+  <div class="panel-heading">{{ heading_payment }}</div>
+  <div class="panel-body">
+
+    {% if (error_warning) %} 
+    <div class="alert alert-warning"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}</div>
+    {% endif %} 
+
+    {% if (payment_methods) %} 
+    {% for payment_method in payment_methods %} 
+    <div class="radio">
+      <label>
+        {% if (payment_method['code'] == code or not code) %} 
+        {% set code = payment_method['code'] %} 
+        <input type="radio" name="payment_method" value="{{ payment_method['code'] }}" checked="checked" />
+        {% else %} 
+        <input type="radio" name="payment_method" value="{{ payment_method['code'] }}" />
+        {% endif %} 
+        {{ payment_method['title'] }} 
+        {% if (payment_method['terms']) %} 
+        ({{ payment_method['terms'] }})
+        {% endif %} 
+        {% if (payment_method['description'] is defined) %} 
+        <br /><small>{{ payment_method['description'] }}</small>
+        {% endif %} 
+      </label>
+    </div>
+    {% endfor %} 
+    {% endif %} 
+
+    
+    <script>
+        $(function(){
+
+            let customer_group_id = {{ customer_group_id }};
+
+            if ( $('#custom-customer input[name=\'customer_group_id\']:checked').val() !== undefined ) {
+                customer_group_id = $('#custom-customer input[name=\'customer_group_id\']:checked').val();
+            }
+
+            custom_block.payment( customer_group_id );
+            
+        });
+    </script>
+
+
+  </div>
+</div>

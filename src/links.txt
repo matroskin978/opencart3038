@@ -7,3 +7,4 @@ INSERT INTO
 `oc_seo_url`(`store_id`,`language_id`,`query`,`keyword`)
  VALUES (0, 2, 'common/home', ''), (0, 1, 'common/home', 'en');
 
+https://dev-opencart.com/moduli/korzina-oformlenie-zakaza/prostoe-oformlenie-zakaza

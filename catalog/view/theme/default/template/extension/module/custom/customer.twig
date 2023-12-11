@@ -1,0 +1,261 @@
+<div class="panel panel-default">
+  <div class="panel-heading">{{ heading_customer }}</div>
+  <div class="panel-body">
+    <div class="form-group" style="display: {% if customer_groups|length < 2 %} none {% endif %}">
+      <label class="control-label">{{ entry_customer_group }}</label>
+      {% for customer_group in customer_groups %} 
+      {% if (customer_group.customer_group_id == customer_group_id) %} 
+      <div class="radio">
+        <label>
+          <input type="radio" name="customer_group_id" value="{{ customer_group.customer_group_id }}" checked="checked" />
+          {{ customer_group.name }}</label>
+      </div>
+      {% else %} 
+      <div class="radio">
+        <label>
+          <input type="radio" name="customer_group_id" value="{{ customer_group.customer_group_id }}" />
+          {{ customer_group.name }}</label>
+      </div>
+      {% endif %} 
+      {% endfor %} 
+    </div>
+
+    {% for field in setting['fields'] %} 
+
+      {% if (field.name == 'firstname') %} 
+        <div class="form-group" id="customer-field-firstname">
+          <label class="control-label" for="customer-input-firstname">{{ entry_firstname }}</label>
+          <input type="text" name="customer_firstname" value="{{ firstname }}" placeholder="{{ entry_firstname }}" id="customer-input-firstname" class="form-control" data-validation="{{ field['validation'] }}" />
+        </div>
+         
+      {% endif %} 
+
+      {% if (field.name == 'lastname') %} 
+        <div class="form-group" id="customer-field-lastname">
+          <label class="control-label" for="customer-input-lastname">{{ entry_lastname }}</label>
+          <input type="text" name="customer_lastname" value="{{ lastname }}" placeholder="{{ entry_lastname }}" id="customer-input-lastname" class="form-control" data-validation="{{ field['validation'] }}" />
+        </div>
+         
+      {% endif %} 
+
+      {% if (field.name == 'email') %} 
+        <div class="form-group" id="customer-field-email">
+          <label class="control-label" for="customer-input-email">{{ entry_email }}</label>
+          <input type="text" name="customer_email" value="{{ email }}" placeholder="{{ entry_email }}" id="customer-input-email" class="form-control" data-validation="{{ field['validation'] }}" />
+        </div>
+         
+      {% endif %} 
+
+      {% if (field.name == 'telephone') %} 
+        <div class="form-group" id="customer-field-telephone">
+          <label class="control-label" for="customer-input-telephone">{{ entry_telephone }}</label>
+          <input type="text" name="customer_telephone" value="{{ telephone }}" placeholder="{{ entry_telephone }}" id="customer-input-telephone" class="form-control" data-validation="{{ field['validation'] }}" />
+        </div>
+         
+      {% endif %} 
+
+      {% if (field.name == 'fax') %} 
+        <div class="form-group" id="customer-field-fax">
+          <label class="control-label" for="customer-input-fax">{{ entry_fax }}</label>
+          <input type="text" name="customer_fax" value="{{ fax }}" placeholder="{{ entry_fax }}" id="customer-input-fax" class="form-control" data-validation="{{ field['validation'] }}" />
+        </div>
+         
+      {% endif %} 
+
+      {% if (field.name == 'password') %} 
+        <div class="form-group" id="customer-field-password">
+          <label class="control-label" for="customer-input-password">{{ entry_password }}</label>
+          <input type="password" name="customer_password" value="{{ password }}" placeholder="{{ entry_password }}" id="customer-input-password" class="form-control" data-validation="{{ field['validation'] }}" />
+        </div>
+         
+      {% endif %} 
+
+      {% if (field.name == 'confirm') %} 
+        <div class="form-group" id="customer-field-confirm">
+          <label class="control-label" for="customer-input-confirm">{{ entry_confirm }}</label>
+          <input type="password" name="customer_confirm" value="{{ confirm }}" placeholder="{{ entry_confirm }}" id="customer-input-confirm" class="form-control" data-validation="{{ field['validation'] }}" />
+        </div>
+         
+      {% endif %} 
+
+      {% if field.name|slice(0, 12) == 'custom_field' %} 
+
+        {% set custom_field_id = field.name|slice(12) %} 
+
+        {% for custom_field in custom_fields %} 
+        {% if (custom_field.custom_field_id == custom_field_id) %} 
+        
+        {% if (custom_field.type == 'select') %} 
+        <div id="customer-field-custom-field{{ custom_field.custom_field_id }}" class="form-group custom-field" data-sort="{{ custom_field.sort_order }}">
+          <label class="control-label" for="input-custom-field{{ custom_field.custom_field_id }}">{{ custom_field.name }}</label>
+          <select name="customer_custom_field{{ custom_field.custom_field_id }}" id="input-custom-field{{ custom_field.custom_field_id }}" class="form-control">
+            <option value="">{{ text_select }}</option>
+            {% for custom_field_value in custom_field['custom_field_value'] %} 
+            <option value="{{ custom_field_value.custom_field_value_id }}">{{ custom_field_value.name }}</option>
+            {% endfor %} 
+          </select>
+        </div>
+        {% endif %} 
+        {% if (custom_field.type == 'radio') %} 
+        <div id="customer-field-custom-field{{ custom_field.custom_field_id }}" class="form-group custom-field" data-sort="{{ custom_field.sort_order }}">
+          <label class="control-label">{{ custom_field.name }}</label>
+          <div id="input-custom-field{{ custom_field.custom_field_id }}">
+            {% for custom_field_value in custom_field['custom_field_value'] %} 
+            <div class="radio">
+              <label>
+                <input type="radio" name="customer_custom_field{{ custom_field.custom_field_id }}" value="{{ custom_field_value.custom_field_value_id }}" />
+                {{ custom_field_value.name }}</label>
+            </div>
+            {% endfor %} 
+          </div>
+        </div>
+        {% endif %} 
+        {% if (custom_field.type == 'checkbox') %} 
+        <div id="customer-field-custom-field{{ custom_field.custom_field_id }}" class="form-group custom-field" data-sort="{{ custom_field.sort_order }}">
+          <label class="control-label">{{ custom_field.name }}</label>
+          <div id="input-custom-field{{ custom_field.custom_field_id }}">
+            {% for custom_field_value in custom_field['custom_field_value'] %} 
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" name="customer_custom_field{{ custom_field.custom_field_id }}[]" value="{{ custom_field_value.custom_field_value_id }}" />
+                {{ custom_field_value.name }}</label>
+            </div>
+            {% endfor %} 
+          </div>
+        </div>
+        {% endif %} 
+        {% if (custom_field.type == 'text') %} 
+        <div id="customer-field-custom-field{{ custom_field.custom_field_id }}" class="form-group custom-field" data-sort="{{ custom_field.sort_order }}">
+          <label class="control-label" for="input-custom-field{{ custom_field.custom_field_id }}">{{ custom_field.name }}</label>
+          <input type="text" name="customer_custom_field{{ custom_field.custom_field_id }}" value="{{ custom_field.value }}" placeholder="{{ custom_field.name }}" id="input-custom-field{{ custom_field.custom_field_id }}" class="form-control" data-validation="{{ field['validation'] }}" />
+        </div>
+        {% endif %} 
+        {% if (custom_field.type == 'textarea') %} 
+        <div id="customer-field-custom-field{{ custom_field.custom_field_id }}" class="form-group custom-field" data-sort="{{ custom_field.sort_order }}">
+          <label class="control-label" for="input-custom-field{{ custom_field.custom_field_id }}">{{ custom_field.name }}</label>
+          <textarea name="customer_custom_field{{ custom_field.custom_field_id }}" rows="5" placeholder="{{ custom_field.name }}" id="input-custom-field{{ custom_field.custom_field_id }}" class="form-control">{{ custom_field.value }}</textarea>
+        </div>
+        {% endif %} 
+        {% if (custom_field.type == 'file') %} 
+        <div id="customer-field-custom-field{{ custom_field.custom_field_id }}" class="form-group custom-field" data-sort="{{ custom_field.sort_order }}">
+          <label class="control-label">{{ custom_field.name }}</label>
+          <br />
+          <button type="button" id="button-custom-field{{ custom_field.custom_field_id }}" data-loading-text="{{ text_loading }}" class="btn btn-default"><i class="fa fa-upload"></i> {{ button_upload }}</button>
+          <input type="hidden" name="customer_custom_field{{ custom_field.custom_field_id }}" value="" id="input-custom-field{{ custom_field.custom_field_id }}" />
+        </div>
+        {% endif %} 
+        {% if (custom_field.type == 'date') %} 
+        <div id="customer-field-custom-field{{ custom_field.custom_field_id }}" class="form-group custom-field" data-sort="{{ custom_field.sort_order }}">
+          <label class="control-label" for="input-custom-field{{ custom_field.custom_field_id }}">{{ custom_field.name }}</label>
+          <div class="input-group date">
+            <input type="text" name="customer_custom_field{{ custom_field.custom_field_id }}" value="{{ custom_field.value }}" placeholder="{{ custom_field.name }}" data-date-format="YYYY-MM-DD" id="input-custom-field{{ custom_field.custom_field_id }}" class="form-control" />
+            <span class="input-group-btn">
+            <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+            </span></div>
+        </div>
+        {% endif %} 
+        {% if (custom_field.type == 'time') %} 
+        <div id="customer-field-custom-field{{ custom_field.custom_field_id }}" class="form-group custom-field" data-sort="{{ custom_field.sort_order }}">
+          <label class="control-label" for="input-custom-field{{ custom_field.custom_field_id }}">{{ custom_field.name }}</label>
+          <div class="input-group time">
+            <input type="text" name="customer_custom_field{{ custom_field.custom_field_id }}" value="{{ custom_field.value }}" placeholder="{{ custom_field.name }}" data-date-format="HH:mm" id="input-custom-field{{ custom_field.custom_field_id }}" class="form-control" />
+            <span class="input-group-btn">
+            <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+            </span></div>
+        </div>
+        {% endif %} 
+        {% if (custom_field.type == 'datetime') %} 
+        <div id="customer-field-custom-field{{ custom_field.custom_field_id }}" class="form-group custom-field" data-sort="{{ custom_field.sort_order }}">
+          <label class="control-label" for="input-custom-field{{ custom_field.custom_field_id }}">{{ custom_field.name }}</label>
+          <div class="input-group datetime">
+            <input type="text" name="customer_custom_field{{ custom_field.custom_field_id }}" value="{{ custom_field.value }}" placeholder="{{ custom_field.name }}" data-date-format="YYYY-MM-DD HH:mm" id="input-custom-field{{ custom_field.custom_field_id }}" class="form-control" />
+            <span class="input-group-btn">
+            <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+            </span></div>
+        </div>
+        {% endif %} 
+        {% endif %} 
+        {% endfor %} 
+
+      {% endif %} 
+
+    {% endfor %} 
+
+  </div>
+</div>
+
+<script><!--
+$('#custom-customer [name^=customer]').on('input', function() {
+  $(this).parent().find('.text-danger').remove();
+  $(this).parent().removeClass('has-error');
+});
+//--></script>
+
+<script><!--
+$('#custom-customer input[name=\'customer_group_id\']').on('change', function() {
+
+  // Customer
+  custom_block.customer(this.value);
+
+  // Payment Methods
+  custom_block.payment(this.value);
+
+});
+
+$('#custom-customer input[name=\'customer_group_id\']:checked').trigger('change');
+//--></script>
+
+<script><!--
+$('#custom-customer button[id^=\'button-custom-field\']').on('click', function() {
+  var node = this;
+
+  $('#form-upload').remove();
+
+  $('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input type="file" name="file" /></form>');
+
+  $('#form-upload input[name=\'file\']').trigger('click');
+
+  if (typeof timer != 'undefined') {
+      clearInterval(timer);
+  }
+
+  timer = setInterval(function() {
+    if ($('#form-upload input[name=\'file\']').val() != '') {
+      clearInterval(timer);
+
+      $.ajax({
+        url: 'index.php?route=tool/upload',
+        type: 'post',
+        dataType: 'json',
+        data: new FormData($('#form-upload')[0]),
+        cache: false,
+        contentType: false,
+        processData: false,
+        beforeSend: function() {
+          $(node).button('loading');
+        },
+        complete: function() {
+          $(node).button('reset');
+        },
+        success: function(json) {
+          $('.text-danger').remove();
+
+          if (json['error']) {
+            $(node).parent().find('input[name^=\'custom_field\']').after('<div class="text-danger">' + json['error'] + '</div>');
+          }
+
+          if (json['success']) {
+            alert(json['success']);
+
+            $(node).parent().find('input[name^=\'custom_field\']').val(json['code']);
+          }
+        },
+        error: function(xhr, ajaxOptions, thrownError) {
+          alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+        }
+      });
+    }
+  }, 500);
+});
+//--></script>
+

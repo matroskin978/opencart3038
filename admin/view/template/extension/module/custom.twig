@@ -1,0 +1,740 @@
+{{ header }} 
+{{ column_left }} 
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="form-latest" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %} 
+        <li><a href="{{ breadcrumb['href'] }}">{{ breadcrumb['text'] }}</a></li>
+        {% endfor %} 
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if (error_warning) %} 
+    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }} 
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %} 
+    {% if (success is defined) %} 
+    <div class="alert alert-success"><i class="fa fa-exclamation-circle"></i> {{ success }} 
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %} 
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+      </div>
+      <div class="panel-body">  
+
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-module" class="form-horizontal">
+
+			<ul class="nav nav-tabs">
+				<li class="active"><a href="#tab-general" data-toggle="tab">{{ tab_general }}</a></li>
+				<li><a href="#tab-login" data-toggle="tab">{{ tab_login }}</a></li>
+				<li><a href="#tab-cart" data-toggle="tab">{{ tab_cart }}</a></li>
+				<li><a href="#tab-customer" data-toggle="tab">{{ tab_customer }}</a></li>
+				<li><a href="#tab-shipping" data-toggle="tab">{{ tab_shipping }}</a></li>
+				<li><a href="#tab-payment" data-toggle="tab">{{ tab_payment }}</a></li>
+				<li><a href="#tab-comment" data-toggle="tab">{{ tab_comment }}</a></li>
+				<li><a href="#tab-module" data-toggle="tab">{{ tab_module }}</a></li>
+				<li><a href="#tab-total" data-toggle="tab">{{ tab_total }}</a></li>
+				<li><a href="#tab-about" data-toggle="tab">{{ tab_about }}</a></li>
+			</ul>			
+
+			<div class="tab-content">
+
+				<div class="tab-pane active" id="tab-general">
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
+						<div class="col-sm-10">
+							<select name="module_custom_status" id="input-status" class="form-control">
+								{% if (module_custom_status) %} 
+								<option value="1" selected="selected">{{ text_enabled }}</option>
+								<option value="0">{{ text_disabled }}</option>
+								{% else %} 
+								<option value="1">{{ text_enabled }}</option>
+								<option value="0" selected="selected">{{ text_disabled }}</option>
+								{% endif %} 
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="input-general-theme"><span data-toggle="tooltip" title="{{ help_theme }}">{{ entry_theme }}</span></label>
+						<div class="col-sm-10">
+							<select name="module_custom_general[theme]" id="input-general-theme" class="form-control" readonly>
+								<option value="bootstrap3" selected="selected">Bootstrap 3</option>
+							</select>
+						</div>
+					</div>
+
+					{# <div class="form-group">
+						<label class="col-sm-2 control-label"><span data-toggle="tooltip" title="{{ help_time }}">{{ entry_time }}</span></label>
+						<div class="col-sm-10">
+							<select name="module_custom_time[status]" class="form-control" id="select-time">
+							{% if (module_custom_time.status) %}
+								<option value="1" selected="selected">{{ text_enabled }}</option>
+								<option value="0">{{ text_disabled }}</option>
+								{% else %}
+								<option value="1">{{ text_enabled }}</option>
+								<option value="0" selected="selected">{{ text_disabled }}</option>
+								{% endif %}
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group toggle-time">
+						<label class="col-sm-2 control-label">{{ entry_monday }}</label>
+						<div class="col-sm-2">
+							<div class="input-group">
+								<span class="input-group-addon">{{ entry_time_start }}</span>
+								<input type="time" name="module_custom_time[monday][start]" value="{{ module_custom_time.monday.start }}" class="form-control">
+							</div>
+						</div>
+						<div class="col-sm-2">
+							<div class="input-group">
+								<span class="input-group-addon">{{ entry_time_end }}</span>
+								<input type="time" name="module_custom_time[monday][end]" value="{{ module_custom_time.monday.end }}" class="form-control">
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group toggle-time">
+						<label class="col-sm-2 control-label">{{ entry_tuesday }}</label>
+						<div class="col-sm-2">
+							<div class="input-group">
+								<span class="input-group-addon">{{ entry_time_start }}</span>
+								<input type="time" name="module_custom_time[tuesday][start]" value="{{ module_custom_time.tuesday.start }}" class="form-control">
+							</div>
+						</div>
+						<div class="col-sm-2">
+							<div class="input-group">
+								<span class="input-group-addon">{{ entry_time_end }}</span>
+								<input type="time" name="module_custom_time[tuesday][end]" value="{{ module_custom_time.tuesday.end }}" class="form-control">
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group toggle-time">
+						<label class="col-sm-2 control-label">{{ entry_wednesday }}</label>
+						<div class="col-sm-2">
+							<div class="input-group">
+								<span class="input-group-addon">{{ entry_time_start }}</span>
+								<input type="time" name="module_custom_time[wednesday][start]" value="{{ module_custom_time.wednesday.start }}" class="form-control">
+							</div>
+						</div>
+						<div class="col-sm-2">
+							<div class="input-group">
+								<span class="input-group-addon">{{ entry_time_end }}</span>
+								<input type="time" name="module_custom_time[wednesday][end]" value="{{ module_custom_time.wednesday.end }}" class="form-control">
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group toggle-time">
+						<label class="col-sm-2 control-label">{{ entry_thursday }}</label>
+						<div class="col-sm-2">
+							<div class="input-group">
+								<span class="input-group-addon">{{ entry_time_start }}</span>
+								<input type="time" name="module_custom_time[thursday][start]" value="{{ module_custom_time.thursday.start }}" class="form-control">
+							</div>
+						</div>
+						<div class="col-sm-2">
+							<div class="input-group">
+								<span class="input-group-addon">{{ entry_time_end }}</span>
+								<input type="time" name="module_custom_time[thursday][end]" value="{{ module_custom_time.thursday.end }}" class="form-control">
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group toggle-time">
+						<label class="col-sm-2 control-label">{{ entry_friday }}</label>
+						<div class="col-sm-2">
+							<div class="input-group">
+								<span class="input-group-addon">{{ entry_time_start }}</span>
+								<input type="time" name="module_custom_time[friday][start]" value="{{ module_custom_time.friday.start }}" class="form-control">
+							</div>
+						</div>
+						<div class="col-sm-2">
+							<div class="input-group">
+								<span class="input-group-addon">{{ entry_time_end }}</span>
+								<input type="time" name="module_custom_time[friday][end]" value="{{ module_custom_time.friday.end }}" class="form-control">
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group toggle-time">
+						<label class="col-sm-2 control-label">{{ entry_saturday }}</label>
+						<div class="col-sm-2">
+							<div class="input-group">
+								<span class="input-group-addon">{{ entry_time_start }}</span>
+								<input type="time" name="module_custom_time[saturday][start]" value="{{ module_custom_time.saturday.start }}" class="form-control">
+							</div>
+						</div>
+						<div class="col-sm-2">
+							<div class="input-group">
+								<span class="input-group-addon">{{ entry_time_end }}</span>
+								<input type="time" name="module_custom_time[saturday][end]" value="{{ module_custom_time.saturday.end }}" class="form-control">
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group toggle-time">
+						<label class="col-sm-2 control-label">{{ entry_sunday }}</label>
+						<div class="col-sm-2">
+							<div class="input-group">
+								<span class="input-group-addon">{{ entry_time_start }}</span>
+								<input type="time" name="module_custom_time[sunday][start]" value="{{ module_custom_time.sunday.start }}" class="form-control">
+							</div>
+						</div>
+						<div class="col-sm-2">
+							<div class="input-group">
+								<span class="input-group-addon">{{ entry_time_end }}</span>
+								<input type="time" name="module_custom_time[sunday][end]" value="{{ module_custom_time.sunday.end }}" class="form-control">
+							</div>
+						</div>
+					</div>
+
+					<script>
+						$('#select-time').on('change', function(){
+							const status = $(this).val();
+							if (status == 1) {
+								$('.toggle-time').show();
+							} else {
+								$('.toggle-time').hide();
+							}
+						});
+						$('#select-time').trigger('change');
+					</script> #}
+
+				</div>
+
+				<div class="tab-pane" id="tab-login">
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="input-login-status"><span data-toggle="tooltip" title="{{ help_login }}">{{ entry_view }}</span></label>
+						<div class="col-sm-10">
+							<select name="module_custom_login[status]" id="input-login-status" class="form-control">
+								{% if (module_custom_login.status) %} 
+								<option value="1" selected="selected">{{ text_yes }}</option>
+								<option value="0">{{ text_no }}</option>
+								{% else %} 
+								<option value="1">{{ text_yes }}</option>
+								<option value="0" selected="selected">{{ text_no }}</option>
+								{% endif %} 
+							</select>
+						</div>
+					</div>
+				</div>
+
+				<div class="tab-pane" id="tab-cart">
+
+					{% if error_cart %}
+						<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_cart }}
+							<button type="button" class="close" data-dismiss="alert">&times;</button>
+						</div>
+					{% endif %}
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="input-cart-status">{{ entry_view }}</label>
+						<div class="col-sm-10">
+							<select name="module_custom_cart[status]" id="input-cart-status" class="form-control">
+								{% if (module_custom_cart.status) %} 
+								<option value="1" selected="selected">{{ text_yes }}</option>
+								<option value="0">{{ text_no }}</option>
+								{% else %} 
+								<option value="1">{{ text_yes }}</option>
+								<option value="0" selected="selected">{{ text_no }}</option>
+								{% endif %} 
+							</select>
+						</div>
+					</div>
+
+					<br>
+
+					<table id="cart-column" class="table table-striped table-bordered table-hover">
+					<thead>
+						<tr>
+							<td class="text-left">
+								{{ column_column }}
+							</td>
+							<td width="56px"></td>
+						</tr>
+					</thead>
+					<tbody>
+						{% set cartKey = 0 %} 
+						{% if (module_custom_cart.column is not empty) %} 
+						{% for column in module_custom_cart.column %} 
+							<tr id="cart-column-{{ cartKey }}">
+								<td>
+									<select name="module_custom_cart[column][{{ cartKey }}]" id="input-cart-column-{{ cartKey }}" class="form-control">
+										{% for name,item in module_custom_cart['list'] %} 
+
+											{% set selected = '' %} 
+
+											{% if (column == name) %}	
+												{% set selected = 'selected="selected"' %} 
+											{% endif %} 
+
+											<option value="{{ name }}" {{ selected }}>{{ item.label }}</option>
+
+										{% endfor %} 
+									</select>
+								</td>
+								<td>
+									<button type="button" onclick="$('#cart-column-{{ cartKey }}').remove();" data-toggle="tooltip" title="{{ entry_remove }}" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button>
+								</td>
+							</tr>
+							{% set cartKey = cartKey + 1 %} 
+						{% endfor %} 
+						{% endif %} 
+					</tbody>
+					<tfoot>
+						<td ></td>
+						<td>
+							<button type="button" onclick="addCartColumn();" data-toggle="tooltip" title="" class="btn btn-primary" data-original-title="Добавить поле"><i class="fa fa-plus-circle"></i></button>
+						</td>
+					</tfoot>
+					</table>
+
+					<script>
+					var cartKey = {{ cartKey }};
+					function addCartColumn(){
+
+						html  = '<tr id="cart-column-' + cartKey + '">';
+						html += '<td><select name="module_custom_cart[column][' + cartKey + ']" id="input-cart-column-' + cartKey + '" class="form-control">';
+							{% for name,item in module_custom_cart['list'] %} 
+								html += '<option value="{{ name }}" >{{ item.label }} ';
+							{% endfor %} 
+						html += '</select></td>';
+
+						html += '<td><button type="button" onclick="$(\'#cart-column-' + cartKey + '\').remove();" data-toggle="tooltip" title="Удалить" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>';
+						html += '</tr>';
+
+						$('#cart-column').append(html);
+						cartKey++;
+					};
+					</script>
+
+				</div>
+				
+				<div class="tab-pane" id="tab-customer">
+
+					<input type="hidden" name="module_custom_customer[status]" value="1">
+
+					<table id="customer-field" class="table table-striped table-bordered table-hover">
+					<thead>
+						<tr>
+							<td class="text-left">
+								{{ column_field }} 
+							</td>
+							<td>
+								{{ column_custumer_group }} 
+							</td>
+							<td>
+								{{ column_required }} 
+							</td>
+							<td>
+								{{ column_validation }} 
+							</td>
+							<td width="56px"></td>
+						</tr>
+					</thead>
+					<tbody>
+						{% set customer_key = 0 %}
+						{% if module_custom_customer.fields %}
+						{% for field in module_custom_customer.fields %}
+							<tr id="customer-field-{{ customer_key }}">
+								<td>
+									<select name="module_custom_customer[fields][{{ customer_key }}][name]" id="input-customer-fields-{{ customer_key }}" class="form-control">
+										{% for name, item in module_custom_customer.list %}
+											{% set selected = '' %}
+											{% if field.name == name %}
+												{% set selected = 'selected="selected"' %}
+											{% endif %}
+											<option value="{{ name }}" {{ selected }}>{{ item.label }}</option>
+										{% endfor %}
+									</select>
+								</td>
+								<td>
+									{% set customer_group_row = 0 %}
+									{% for customer_group in customer_groups %}
+										<div class="checkbox"><label>
+											{% if field.customer_group and (customer_group.customer_group_id in field.customer_group) %}
+												<input type="checkbox" name="module_custom_customer[fields][{{ customer_key }}][customer_group][{{ customer_group_row }}]" value="{{ customer_group.customer_group_id }}" checked="checked" />
+											{% else %}
+												<input type="checkbox" name="module_custom_customer[fields][{{ customer_key }}][customer_group][{{ customer_group_row }}]" value="{{ customer_group.customer_group_id }}" />
+											{% endif %}
+											{{ customer_group.name }}
+										</label></div>
+										{% set customer_group_row = customer_group_row + 1 %}
+									{% endfor %}
+								</td>
+								<td>
+									{% set customer_group_row = 0 %}
+									{% for customer_group in customer_groups %}
+										<div class="checkbox"><label>
+											{% if field.required and (customer_group.customer_group_id in field.required) %}
+												<input type="checkbox" name="module_custom_customer[fields][{{ customer_key }}][required][{{ customer_group_row }}]" value="{{ customer_group.customer_group_id }}" checked="checked" />
+											{% else %}
+												<input type="checkbox" name="module_custom_customer[fields][{{ customer_key }}][required][{{ customer_group_row }}]" value="{{ customer_group.customer_group_id }}" />
+											{% endif %}
+											{{ customer_group.name }}
+										</label></div>
+										{% set customer_group_row = customer_group_row + 1 %}
+									{% endfor %}
+								</td>
+								<td>
+									<input type="text" name="module_custom_customer[fields][{{ customer_key }}][validation]" value="{{ field.validation }}" placeholder="{{ entry_validate }}" id="input-customer-sort" class="form-control"/>
+								</td>
+								<td>
+									<button type="button" onclick="jQuery('#customer-field-{{ customer_key }}').remove()" data-toggle="tooltip" title="{{ entry_remove }}" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button>
+								</td>
+							</tr>
+							{% set customer_key = customer_key + 1 %}
+						{% endfor %}
+						{% endif %}
+					</tbody>
+					<tfoot>
+						<td colspan="4"></td>
+						<td>
+							<button type="button" onclick="addcustomerField()" data-toggle="tooltip" title="" class="btn btn-primary" data-original-title="Добавить поле"><i class="fa fa-plus-circle"></i></button>
+						</td>
+					</tfoot>
+					</table>
+					
+					<script>
+						var customerField = {{ customer_key }};
+						function addcustomerField(){
+
+							html  = '<tr id="customer-field-' + customerField + '">';
+							
+							html += '<td><select name="module_custom_customer[fields][' + customerField + '][name]" id="input-customer-fields-' + customerField + '" class="form-control">';
+								{% for name, item in module_custom_customer.list %}
+									html += '<option value="{{ name }}" >{{ item.label }}';
+								{% endfor %}
+							html += '</select></td>';
+
+							html += '<td>';
+								{% set customer_group_row = 0 %}
+								{% for customer_group in customer_groups %}
+									html += '<div class="checkbox"><label><input type="checkbox" name="module_custom_customer[fields][' + customerField + '][customer_group][{{ customer_group_row }}]" value="{{ customer_group.customer_group_id }}" />{{ customer_group.name }}</label></div>';
+									{% set customer_group_row = customer_group_row + 1 %}
+								{% endfor %}
+							html += '</td>';
+							
+							html += '<td>';
+								{% set customer_group_row = 0 %}
+								{% for customer_group in customer_groups %}
+									html += '<div class="checkbox"><label><input type="checkbox" name="module_custom_customer[fields][' + customerField + '][required][{{ customer_group_row }}]" value="{{ customer_group.customer_group_id }}" />{{ customer_group.name }}</label></div>';
+									{% set customer_group_row = customer_group_row + 1 %}
+								{% endfor %}
+							html += '</td>';
+							
+							html += '<td><input type="text" name="module_custom_customer[fields][' + customerField + '][validation]" placeholder="{{ entry_validate}}" id="input-customer-sort" class="form-control"/></td>';
+
+							html += '<td><button type="button" onclick="jQuery(\'#customer-field-' + customerField + '\').remove();" data-toggle="tooltip" title="Удалить" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>';
+							html += '</tr>';
+
+							jQuery('#customer-field').append(html);
+							
+							customerField++;
+						};
+					</script>
+
+				</div>
+				
+				<div class="tab-pane" id="tab-shipping">
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="input-shipping-status">{{ entry_view }}</label>
+						<div class="col-sm-10">
+							<select name="module_custom_shipping[status]" id="input-shipping-status" class="form-control">
+								{% if module_custom_shipping.status %}
+								<option value="1" selected="selected">{{ text_yes }}</option>
+								<option value="0">{{ text_no }}</option>
+								{% else %}
+								<option value="1">{{ text_yes }}</option>
+								<option value="0" selected="selected">{{ text_no }}</option>
+								{% endif %}
+							</select>
+						</div>
+					</div>
+
+					<br>
+
+					<table id="shipping-field" class="table table-striped table-bordered table-hover">
+						<thead>
+							<tr>
+								<td class="text-left">{{ column_field }}</td>
+								<td>{{ column_shipping_method }}</td>
+								<td>{{ column_required }}</td>
+								<td>{{ column_validation }}</td>
+								<td width="56px"></td>
+							</tr>
+						</thead>
+						<tbody>
+							{% set shipping_key = 0 %}
+							{% if module_custom_shipping.fields %}
+							{% for field in module_custom_shipping.fields %}
+								<tr id="shipping-field-{{ shipping_key }}">
+									<td>
+										<select name="module_custom_shipping[fields][{{ shipping_key }}][name]" id="input-shipping-fields-{{ shipping_key }}" class="form-control">
+											{% for name, item in module_custom_shipping.list %}
+												{% set selected = '' %}
+												{% if field.name == name %}
+													{% set selected = 'selected="selected"' %}
+												{% else %}
+													{% set selected = 'data-field-name="' + field.name + '"' %}
+												{% endif %}
+												<option value="{{ name }}" {{ selected }} >{{ item.label }}</option>
+											{% endfor %}
+										</select>
+									</td>
+									<td>
+										{% set method_row = 0 %}
+										{% for method in module_custom_shipping.methods %}
+										<div class="checkbox"><label>
+											{% if field.method and (method.code in field.method) %}
+												<input type="checkbox" name="module_custom_shipping[fields][{{ shipping_key }}][method][{{ method_row }}]" value="{{ method.code }}" checked="checked" />
+											{% else %}
+												<input type="checkbox" name="module_custom_shipping[fields][{{ shipping_key }}][method][{{ method_row }}]" value="{{ method.code }}" />
+											{% endif %}
+											{{ method.label }}
+										</label></div>
+										{% set method_row = method_row + 1 %}
+										{% endfor %}
+									</td>
+									</td>
+									<td>
+										{% set method_row = 0 %}
+										{% for method in module_custom_shipping.methods %}
+										<div class="checkbox"><label>
+											{% if field.required and (method.code in field.required) %}
+												<input type="checkbox" name="module_custom_shipping[fields][{{ shipping_key }}][required][{{ method_row }}]" value="{{ method.code }}" checked="checked" />
+											{% else %}
+												<input type="checkbox" name="module_custom_shipping[fields][{{ shipping_key }}][required][{{ method_row }}]" value="{{ method.code }}" />
+											{% endif %}
+											{{ method.label }}
+										</label></div>
+										{% set method_row = method_row + 1 %}
+										{% endfor %}
+									</td>
+									<td>
+										<input type="text" name="module_custom_shipping[fields][{{ shipping_key }}][validation]" value="{{ field.validation }}" placeholder="{{ entry_validate }}" id="input-shipping-sort" class="form-control"/>
+									</td>
+									<td>
+										<button type="button" onclick="jQuery('#shipping-field-{{ shipping_key }}').remove()" data-toggle="tooltip" title="{{ entry_remove }}" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button>
+									</td>
+								</tr>
+								{% set shipping_key = shipping_key + 1 %}
+							{% endfor %}
+							{% endif %}
+						</tbody>
+						<tfoot>
+							<td colspan="4"></td>
+							<td>
+								<button type="button" onclick="addShippingField()" data-toggle="tooltip" title="" class="btn btn-primary" data-original-title="Добавить поле"><i class="fa fa-plus-circle"></i></button>
+							</td>
+						</tfoot>
+					</table>
+				  
+					<script>
+						var shippingField = {{ shipping_key }};
+						function addShippingField(){
+
+							html  = '<tr id="shipping-field-' + shippingField + '">';
+							html += '<td><select name="module_custom_shipping[fields][' + shippingField + '][name]" id="input-shipping-fields-' + shippingField + '" class="form-control">';
+								{% for name, item in module_custom_shipping.list %}
+									html += '<option value="{{ name }}" >{{ item.label }}';
+								{% endfor %}
+							html += '</select></td>';
+
+							html += '<td>';
+								{% set method_row = 0 %}
+								{% for method in module_custom_shipping.methods %}
+									html += '<div class="checkbox"><label><input type="checkbox" name="module_custom_shipping[fields][' + shippingField + '][method][{{ method_row }}]" value="{{ method.code }}" />{{ method.label }}</label></div>';
+									{% set method_row = method_row + 1 %}
+								{% endfor %}
+							html += '</td>';
+
+							html += '<td>';
+								{% set method_row = 0 %}
+								{% for method in module_custom_shipping.methods %}
+									html += '<div class="checkbox"><label><input type="checkbox" name="module_custom_shipping[fields][' + shippingField + '][required][{{ method_row }}]" value="{{ method.code }}" />{{ method.label }}</label></div>';
+									{% set method_row = method_row + 1 %}
+								{% endfor %}
+							html += '</td>';
+
+							html += '<td><input type="text" name="module_custom_shipping[fields][' + shippingField + '][validation]" value="{{ field.validation }}" placeholder="{{ entry_validate }}" id="input-shipping-sort" class="form-control"/></td>';
+
+							html += '<td><button type="button" onclick="jQuery(\'#shipping-field-' + shippingField + '\').remove();" data-toggle="tooltip" title="Удалить" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>';
+							html += '</tr>';
+
+							jQuery('#shipping-field').append(html);
+							shippingField++;
+							
+						};
+					</script>
+
+				</div>
+				
+				<div class="tab-pane" id="tab-payment">
+
+					<input type="hidden" name="module_custom_payment[status]" value="1">
+
+					<table id="payment-methods" class="table table-striped table-bordered table-hover">
+						<thead>
+							<tr>
+								<td class="text-left">{{ column_field }}</td>
+								<td >{{ column_custumer_group }}</td>
+								<td width="56px"></td>
+							</tr>
+						</thead>
+						<tbody>
+							{% set payment_key = 0 %}
+							{% if module_custom_payment.methods %}
+							{% for method in module_custom_payment.methods %}
+								<tr id="payment-method-{{ payment_key }}">
+									<td>
+										<select name="module_custom_payment[methods][{{ payment_key }}][name]" id="input-customer-method-{{ payment_key }}" class="form-control">
+											{% for item in module_custom_payment.list %}
+												{% set selected = '' %}
+												{% if item.code == method.name %}
+													{% set selected = 'selected="selected"' %}
+												{% endif %}
+												<option value="{{ item.code }}" {{ selected }}>{{ item.label }}</option>
+											{% endfor %}
+										</select>
+									</td>
+									<td>
+										{% set customer_group_row = 0 %}
+										{% for customer_group in customer_groups %}
+											<div class="checkbox"><label>
+												{% if method.customer_group and (customer_group.customer_group_id in method.customer_group) %}
+													<input type="checkbox" name="module_custom_payment[methods][{{ payment_key }}][customer_group][{{ customer_group_row }}]" value="{{ customer_group.customer_group_id }}" checked="checked" />
+												{% else %}
+													<input type="checkbox" name="module_custom_payment[methods][{{ payment_key }}][customer_group][{{ customer_group_row }}]" value="{{ customer_group.customer_group_id }}" />
+												{% endif %}
+												{{ customer_group.name }}
+											</label></div>
+										{% set customer_group_row = customer_group_row + 1 %}
+										{% endfor %}
+									</td>
+									<td>
+										<button type="button" onclick="jQuery('#payment-method-{{ payment_key }}').remove()" data-toggle="tooltip" title="{{ entry_remove }}" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button>
+									</td>
+								</tr>
+								{% set payment_key = payment_key + 1 %}
+							{% endfor %}
+							{% endif %}
+						</tbody>
+						<tfoot>
+							<td colspan="2"></td>
+							<td>
+								<button type="button" onclick="addPaymentMethod()" data-toggle="tooltip" title="" class="btn btn-primary" data-original-title="Добавить поле"><i class="fa fa-plus-circle"></i></button>
+							</td>
+						</tfoot>
+					</table>
+
+					<script>
+					var payment_key = {{ payment_key }};
+					function addPaymentMethod(){
+
+						html  = '<tr id="payment-method-' + payment_key + '">';
+						html += '<td><select name="module_custom_payment[methods][' + payment_key + '][name]" id="input-payment-method-' + payment_key + '" class="form-control">';
+							{% for name, item in module_custom_payment.list %}
+								html += '<option value="{{ item.code }}" >{{ item.label }}';
+							{% endfor %}
+						html += '</select></td>';
+
+						html += '<td>';
+							{% set customer_group_row = 0 %}
+							{% for customer_group in customer_groups %}
+								html += '<div class="checkbox"><label><input type="checkbox" name="module_custom_payment[methods][' + payment_key + '][customer_group][{{ customer_group_row }}]" value="{{ customer_group.customer_group_id }}" />{{ customer_group.name }}</label></div>';
+								{% set customer_group_row = customer_group_row + 1 %}
+							{% endfor %}
+						html += '</td>';
+
+						html += '<td><button type="button" onclick="jQuery(\'#payment-method-' + payment_key + '\').remove();" data-toggle="tooltip" title="Удалить" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>';
+						html += '</tr>';
+
+						jQuery('#payment-methods').append(html);
+						payment_key++;
+					};
+					</script>
+
+				</div>
+				
+				<div class="tab-pane" id="tab-comment">
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="input-comment-status">{{ entry_view }}</label>
+						<div class="col-sm-10">
+							<select name="module_custom_comment[status]" id="input-comment-status" class="form-control">
+								{% if module_custom_comment.status %}
+								<option value="1" selected="selected">{{ text_yes }}</option>
+								<option value="0">{{ text_no }}</option>
+								{% else %}
+								<option value="1">{{ text_yes }}</option>
+								<option value="0" selected="selected">{{ text_no }}</option>
+								{% endif %}
+							</select>
+						</div>
+					</div>
+				</div>  
+				
+				<div class="tab-pane" id="tab-module">
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="input-module-status">{{ entry_view }}</label>
+						<div class="col-sm-10">
+							<select name="module_custom_module[status]" id="input-module-status" class="form-control">
+								{% if module_custom_module.status %}
+								<option value="1" selected="selected">{{ text_yes }}</option>
+								<option value="0">{{ text_no }}</option>
+								{% else %}
+								<option value="1">{{ text_yes }}</option>
+								<option value="0" selected="selected">{{ text_no }}</option>
+								{% endif %}
+							</select>
+						</div>
+					</div>
+				</div>  
+
+				<div class="tab-pane" id="tab-total">
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="input-total-status">{{ entry_view }}</label>
+						<div class="col-sm-10">
+							<select name="module_custom_total[status]" id="input-total-status" class="form-control">
+								{% if module_custom_total.status %}
+								<option value="1" selected="selected">{{ text_yes }}</option>
+								<option value="0">{{ text_no }}</option>
+								{% else %}
+								<option value="1">{{ text_yes }}</option>
+								<option value="0" selected="selected">{{ text_no }}</option>
+								{% endif %}
+							</select>
+						</div>
+					</div>
+				</div>  
+
+				<div class="tab-pane" id="tab-about">
+					<p>{{ version }}</p>
+					<p>{{ about_module }}</p>
+				</div>
+
+			</div>
+				
+	    </form>
+      </div> 
+    </div>    
+   
+	
+  </div>
+</div>
+{{ footer }} 
