@@ -161,16 +161,6 @@ var cart = {
 					$('#modal-cart .modal-body').load('index.php?route=common/cart/info .in-cart');
 					$('#modal-cart').modal();
 
-					/* $('#content').parent().before('<div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> ' + json['success'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
-
-					// Need to set timeout otherwise it wont update the total
-					setTimeout(function () {
-						$('#cart > button').html('<span id="cart-total"><i class="fa fa-shopping-cart"></i> ' + json['total'] + '</span>');
-					}, 100);
-
-					$('html, body').animate({ scrollTop: 0 }, 'slow');
-
-					$('#cart > ul').load('index.php?route=common/cart/info ul li'); */
 				}
 			},
 			error: function (xhr, ajaxOptions, thrownError) {
@@ -317,11 +307,33 @@ var compare = {
 				$('.alert-dismissible').remove();
 
 				if (json['success']) {
-					$('#content').parent().before('<div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> ' + json['success'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+					let html = `<div class="modal fade" id="compareModal" tabindex="-1" aria-labelledby="compareModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ${json['success']}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">${btnClose}</button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+					$('body').append(html);
+
+					$('#compareModal').modal('show');
+					$('#compare-total').html(json['total']);
+					/*$('#content').parent().before('<div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> ' + json['success'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
 
 					$('#compare-total').html(json['total']);
 
-					$('html, body').animate({ scrollTop: 0 }, 'slow');
+					$('html, body').animate({ scrollTop: 0 }, 'slow');*/
 				}
 			},
 			error: function (xhr, ajaxOptions, thrownError) {
