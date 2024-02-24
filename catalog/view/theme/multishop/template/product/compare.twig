@@ -1,0 +1,141 @@
+{{ header }}
+
+<div id="product-compare">
+
+    <!-- Breadcrumb Start -->
+    <div class="container-fluid">
+        <div class="row px-xl-5">
+            <div class="col-12">
+                <nav class="breadcrumb bg-light mb-30">
+                    {% for breadcrumb in breadcrumbs %}
+                        {% if loop.last %}
+                            <span class="breadcrumb-item active">{{ breadcrumb.text }}</span>
+                        {% else %}
+                            <a class="breadcrumb-item text-dark" href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a>
+                        {% endif %}
+                    {% endfor %}
+                </nav>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+    <div class="container-fluid pb-5">
+        <div class="row px-xl-5">
+
+            {% if success %}
+                <div class="col-12">
+                    <div class="alert alert-success alert-dismissible fade show"><i class="fa fa-check-circle"></i> {{ success }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+            {% endif %}
+
+            <div class="col-12 h-auto mb-30" id="content">
+                <div class="h-100 bg-light p-30">
+                    <h1 class="h3">{{ heading_title }}</h1>
+
+                    {% if products %}
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <td colspan="{{ products|length + 1 }}"><strong>{{ text_product }}</strong></td>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                <tr>
+                                    <td>{{ text_name }}</td>
+                                    {% for product in products %}
+                                        <td><a href="{{ product.href }}"><strong>{{ product.name }}</strong></a></td>
+                                    {% endfor %}
+                                </tr>
+
+                                <tr>
+                                    <td>{{ text_image }}</td>
+                                    {% for product in products %}
+                                        <td class="text-center">{% if product.thumb %} <img src="{{ product.thumb }}" alt="{{ product.name }}" title="{{ product.name }}" class="img-thumbnail" /> {% endif %}</td>
+                                    {% endfor %}
+                                </tr>
+
+                                <tr>
+                                    <td>{{ text_price }}</td>
+                                    {% for product in products %}
+                                        <td>{% if product.price %}
+                                                {% if not product.special %}
+                                                    {{ product.price }}
+                                                {% else %} <strike>{{ product.price }}</strike> {{ product.special }}
+                                                {% endif %}
+                                            {% endif %}</td>
+                                    {% endfor %}
+                                </tr>
+
+                                <tr>
+                                    <td>{{ text_availability }}</td>
+                                    {% for product in products %}
+                                        <td>{{ product.availability }}</td>
+                                    {% endfor %}
+                                </tr>
+
+                                <tr>
+                                    <td>{{ text_weight }}</td>
+                                    {% for product in products %}
+                                        <td>{{ product.weight }}</td>
+                                    {% endfor %}
+                                </tr>
+
+                                <tr>
+                                    <td>{{ text_dimension }}</td>
+                                    {% for product in products %}
+                                        <td>{{ product.length }} x {{ product.width }} x {{ product.height }}</td>
+                                    {% endfor %}
+                                </tr>
+
+                                </tbody>
+
+                                {% for attribute_group in attribute_groups %}
+                                    <thead>
+                                    <tr>
+                                        <td colspan="{{ products|length + 1 }}"><strong>{{ attribute_group.name }}</strong></td>
+                                    </tr>
+                                    </thead>
+                                    {% for key, attribute in attribute_group.attribute %}
+                                        <tbody>
+                                        <tr>
+                                            <td>{{ attribute.name }}</td>
+                                            {% for product in products %}
+                                                {% if product.attribute[key] %}
+                                                    <td> {{ product.attribute[key] }}</td>
+                                                {% else %}
+                                                    <td></td>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </tr>
+                                        </tbody>
+                                    {% endfor %}
+                                {% endfor %}
+                                <tr>
+                                    <td></td>
+                                    {% for product in products %}
+                                        <td><input type="button" value="{{ button_cart }}" class="btn btn-primary btn-block" onclick="cart.add('{{ product.product_id }}', '{{ product.minimum }}');" />
+                                            <a href="{{ product.remove }}" class="btn btn-danger btn-block">{{ button_remove }}</a></td>
+                                    {% endfor %} </tr>
+                            </table>
+                        </div>
+                    {% else %}
+                        <p>{{ text_empty }}</p>
+                    {% endif %}
+
+                </div><!-- ./h-100 bg-light p-30 -->
+
+            </div><!-- ./class h-auto mb-30 -->
+
+        </div><!-- ./row px-xl-5 -->
+    </div>
+
+</div><!-- #product-compare -->
+
+{{ footer }}
