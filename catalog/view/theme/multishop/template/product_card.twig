@@ -1,11 +1,11 @@
-<div class="product-item bg-light mb-4">
+<div class="product-item bg-light mb-4 product-id-{{ product.product_id }}">
     <div class="product-img position-relative overflow-hidden">
         <img class="img-fluid w-100" src="{{ product.thumb }}" alt="">
         <div class="product-action">
             <button type="button" onclick="cart.add('{{ product.product_id }}');" class="btn btn-outline-dark btn-square" href="">
                 <i class="fa fa-shopping-cart"></i>
             </button>
-            <button type="button" onclick="wishlist.add('{{ product.product_id }}');" class="btn btn-outline-dark btn-square" href="">
+            <button type="button" onclick="wishlist.add('{{ product.product_id }}');" class="btn btn-outline-dark btn-square add2wishlist" href="">
                 <i class="far fa-heart"></i>
             </button>
             <button type="button" onclick="compare.add('{{ product.product_id }}');" class="btn btn-outline-dark btn-square" href="">

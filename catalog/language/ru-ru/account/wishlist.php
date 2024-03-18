@@ -19,3 +19,5 @@ $_['column_stock']  = 'Наличие';
 $_['column_price']  = 'Цена за единицу товара';
 $_['column_action'] = 'Действие';
 
+$_['text_remove_wishlist']   = 'Товар удален из закладок';
+$_['text_add_wishlist']  = 'Товар добавлен в <a href="%s">закладки</a>';

@@ -113,7 +113,41 @@ class ControllerAccountWishList extends Controller {
 		$this->response->setOutput($this->load->view('account/wishlist', $data));
 	}
 
-	public function add() {
+    public function add() {
+        $this->load->language('account/wishlist');
+
+        $json = array();
+
+        if (isset($this->request->post['product_id'])) {
+            $product_id = $this->request->post['product_id'];
+        } else {
+            $product_id = 0;
+        }
+
+        $wishlist = $_COOKIE['wishlist'] ?? []; // 1-3-10
+        if ($wishlist) {
+            $wishlist = explode('-', $wishlist);
+        }
+        if (false !== ($key = array_search($product_id, $wishlist))) {
+            unset($wishlist[$key]);
+            $json['success'] = $this->language->get('text_remove_wishlist');
+        } else {
+            if (count($wishlist) == 10) {
+                array_shift($wishlist);
+            }
+            $wishlist[] = $product_id;
+            $json['success'] = sprintf($this->language->get('text_add_wishlist'), $this->url->link('account/wishlist'));
+        }
+
+        $json['total'] = count($wishlist);
+        $wishlist = implode('-', $wishlist);
+        setcookie('wishlist', $wishlist, time() + 3600 * 24 * 30, '/');
+
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
+
+	public function _add() {
 		$this->load->language('account/wishlist');
 
 		$json = array();
