@@ -76,6 +76,11 @@ class ControllerExtensionModuleFeatured extends Controller
 
 		// add
 		$data['title'] = $this->language->get("{$setting['name']}_title");
+        // Wishlist
+        $data['wishlist_product_ids'] = $_COOKIE['wishlist'] ?? [];
+        if ($data['wishlist_product_ids']) {
+            $data['wishlist_product_ids'] = explode('-', $data['wishlist_product_ids']);
+        }
 
 		if ($data['products']) {
 			return $this->load->view('extension/module/featured', $data);

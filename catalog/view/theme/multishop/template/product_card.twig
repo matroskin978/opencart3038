@@ -5,7 +5,7 @@
             <button type="button" onclick="cart.add('{{ product.product_id }}');" class="btn btn-outline-dark btn-square" href="">
                 <i class="fa fa-shopping-cart"></i>
             </button>
-            <button type="button" onclick="wishlist.add('{{ product.product_id }}');" class="btn btn-outline-dark btn-square add2wishlist" href="">
+            <button type="button" onclick="wishlist.add('{{ product.product_id }}');" class="btn btn-outline-dark btn-square add2wishlist {% if product.product_id in wishlist_product_ids %}active{% endif %}" href="">
                 <i class="far fa-heart"></i>
             </button>
             <button type="button" onclick="compare.add('{{ product.product_id }}');" class="btn btn-outline-dark btn-square" href="">

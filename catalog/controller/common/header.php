@@ -46,13 +46,18 @@ class ControllerCommonHeader extends Controller {
 		$this->load->language('common/header');
 
 		// Wishlist
-		if ($this->customer->isLogged()) {
+        $wishlist = $_COOKIE['wishlist'] ?? [];
+        if ($wishlist) {
+            $wishlist = explode('-', $wishlist);
+        }
+        $data['text_wishlist'] = sprintf($this->language->get('text_wishlist'), count($wishlist));
+		/*if ($this->customer->isLogged()) {
 			$this->load->model('account/wishlist');
 
 			$data['text_wishlist'] = sprintf($this->language->get('text_wishlist'), $this->model_account_wishlist->getTotalWishlist());
 		} else {
 			$data['text_wishlist'] = sprintf($this->language->get('text_wishlist'), (isset($this->session->data['wishlist']) ? count($this->session->data['wishlist']) : 0));
-		}
+		}*/
 
 		$data['text_logged'] = sprintf($this->language->get('text_logged'), $this->url->link('account/account', '', true), $this->customer->getFirstName(), $this->url->link('account/logout', '', true));
 		

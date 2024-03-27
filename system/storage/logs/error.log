@@ -1,0 +1,7 @@
+2024-03-27 14:23:23 - PHP Notice:  Undefined variable: wishlist in D:\Server538\OpenServer\domains\oc3.loc\catalog\controller\extension\module\featured.php on line 82
+2024-03-27 14:23:23 - PHP Notice:  Undefined variable: wishlist in D:\Server538\OpenServer\domains\oc3.loc\catalog\controller\extension\module\featured.php on line 82
+2024-03-27 14:25:16 - PHP Notice:  Undefined variable: wishlist in D:\Server538\OpenServer\domains\oc3.loc\catalog\controller\product\category.php on line 358
+2024-03-27 14:45:24 - PHP Warning:  Illegal string offset 'product_id' in D:\Server538\OpenServer\domains\oc3.loc\catalog\controller\account\wishlist.php on line 64
+2024-03-27 14:45:24 - PHP Warning:  Cannot modify header information - headers already sent by (output started at D:\Server538\OpenServer\domains\oc3.loc\catalog\controller\startup\error.php:34) in D:\Server538\OpenServer\domains\oc3.loc\catalog\controller\account\wishlist.php on line 109
+2024-03-27 14:45:24 - PHP Warning:  Illegal string offset 'product_id' in D:\Server538\OpenServer\domains\oc3.loc\catalog\controller\account\wishlist.php on line 64
+2024-03-27 14:45:24 - PHP Warning:  array_search() expects parameter 2 to be array, string given in D:\Server538\OpenServer\domains\oc3.loc\catalog\controller\account\wishlist.php on line 105
