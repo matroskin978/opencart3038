@@ -1,0 +1,24 @@
+{% if currencies|length > 1 %}
+    <div class="btn-group mx-2">
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-currency">
+
+            <button type="button" class="btn btn-sm btn-light dropdown-toggle"
+                    data-toggle="dropdown">
+                {% for currency in currencies %}
+                    {% if currency.code == code %}
+                        {{ currency.code }}
+                    {% endif %}
+                {% endfor %}
+            </button>
+
+            <div class="dropdown-menu dropdown-menu-right">
+                {% for currency in currencies|filter(currency => currency.code != code) %}
+                    <button class="dropdown-item currency-select" type="button" name="{{ currency.code }}">{{ currency.code }}</button>
+                {% endfor %}
+            </div>
+
+            <input type="hidden" name="code" value="" />
+            <input type="hidden" name="redirect" value="{{ redirect }}" />
+        </form>
+    </div>
+{% endif %}
